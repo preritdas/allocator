@@ -1,6 +1,9 @@
 import alpaca_trade_api as alpaca_api
+import mypytoolkit as kit
 
+import time
 import multiprocessing as mp
+import texts
 import _keys
 
 # Instantiate Alpaca API
@@ -90,5 +93,30 @@ def buy_assets(quantities: dict = calculate_quantities()):
         )
         process.start()
 
+def compile_message(quantities: dict = calculate_quantities()):
+    """Compiles the message for update on execution."""
+    message = "Bought "
+    for symbol, amount in quantities.items():
+        message += f"{amount} of {symbol}, "
+
+    # End the message
+    return message[0:-2] + "."
+
+def main():
+    """Main execution function."""
+    print("Allocator is online.")
+
+    # if it's market hours and not saturday or sunday
+    if 6.6 < kit.time_decimal() < 12.9 and kit.weekday_int() <= 5:
+        buy_assets()
+
+        # Debrief
+        message = f"""
+        Allocator has executed orders.
+        {compile_message()}
+        """
+        texts.text_me(message)
+        time.sleep(36000) # sleep for 10 hours
+
 if __name__ == "__main__":
-    buy_assets()
+    main()
