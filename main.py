@@ -106,17 +106,18 @@ def main():
     """Main execution function."""
     print("Allocator is online.")
 
-    # if it's market hours and not saturday or sunday
-    if 6.6 < kit.time_decimal() < 12.9 and kit.weekday_int() <= 5:
-        buy_assets()
+    while True:
+        # if it's market hours and not saturday or sunday
+        if 6.6 < kit.time_decimal() < 12.9 and kit.weekday_int() <= 5:
+            buy_assets()
 
-        # Debrief
-        message = f"""
-        Allocator has executed orders.
-        {compile_message()}
-        """
-        texts.text_me(message)
-        time.sleep(36000) # sleep for 10 hours
+            # Debrief
+            message = f"""
+            Allocator has executed orders.
+            {compile_message()}
+            """
+            texts.text_me(message)
+            time.sleep(36000) # sleep for 10 hours
 
 if __name__ == "__main__":
     main()
