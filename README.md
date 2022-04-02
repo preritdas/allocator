@@ -1,6 +1,6 @@
 # Allocator
 
-_Currently, the source code for this project is private. It will be made available once the bot has been retired for individual use, or is turned into something more tangible than a personal trading bot. When public, the code will be available on this [GitHub repository](https://github.com/preritdas/allocator)._
+_Currently, the source code for this project is private. It will be made available once retired for public use. When public, the code will be available on this [GitHub repository](https://github.com/preritdas/allocator)._
 
 ----
 
@@ -19,7 +19,9 @@ allocation = {
 
 Every day, Allocator will read the available cash balance and invest in various ETFs such that the account is exposed to the market in as close to the `allocation` as possible. 
 
-Depositing cash to the account after deployment is _encouraged_. Allocator submits several fractional orders to ensure that it can achieve a balance as close as possible to the predefined `allocation`. To ensure rapid execution, when purchases are necessary, allocator will designate the order execution task for each ETF to an independent CPU core. This allows orders to be submitted concurrently and rapidly. 
+Depositing cash consistently to the account after deployment is _encouraged_ (but not necessary), as this is what gives Allocator the ability to re-invest in all sectors.
+
+Allocator submits several fractional orders to ensure that it can achieve a balance as close as possible to the predefined `allocation`. To ensure rapid execution, when purchases are necessary, allocator will designate the order execution task for each ETF to an independent CPU core. This allows orders to be submitted concurrently and rapidly. 
 
 ## Upcoming Features
 
