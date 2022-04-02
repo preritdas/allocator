@@ -56,6 +56,19 @@ def calculate_quantities(cash_balance: float = cash_balance()):
     for alloc, etf in zip(allocation, etfs):
         amount = cash_balance * allocation[alloc]
         quantities[etfs[alloc]] = round(amount, 3)
+
+    # Check for notional value > 1
+    for symbol, amount in quantities.items():
+        if amount < 1:
+            print(f"{symbol} amount, {amount}, is less than 1.")
+            print("Sleeping for 10 hours until the next day.")
+            texts.text_me(
+                "Allocator is sleeping until tomorrow because ",
+                f"{symbol}'s notional amount, {amount}, is less than 1."
+            )
+            return False
+    
+    # if all notional values are above 1
     return quantities
 
 def fractional_order(side: str, symbol: str, amount: float):
@@ -84,22 +97,38 @@ def buy_assets(quantities: dict = calculate_quantities()):
     Buys the ETFs in the amounts dictated by the 
     quantities parameter. This is defaulted to the output of
     the calculate_quantities method.
-    Returns nothing.
+    Returns True if notional values were high enough for the
+    program to make purchases. Returns False if they're not.
     """
+    # if get_quantities returned false due to notional value < 1
+    if not quantities:
+        print(
+            'Buy assets function not running because calculate_quantities',
+            'function deemed notional values to be too low.'
+        )
+        return False
+
     for symbol, amount in quantities.items():
         process = mp.Process(
             target = fractional_order, 
             args = ('buy', symbol, amount)
         )
         process.start()
+    return True
 
-def compile_message(quantities: dict = calculate_quantities()):
+def compile_message(quantities = calculate_quantities()):
     """Compiles the message for update on execution."""
+    # If a notional value was < 1
+    if not quantities:
+        print("New compile message because quantities were too low.")
+        message = "Skipping today because a quantity was less than 1."
+        return message
+
     message = "Bought "
     for symbol, amount in quantities.items():
         message += f"{amount} of {symbol}, "
 
-    # End the message
+    # End the message with a period
     return message[0:-2] + "."
 
 def main():
@@ -112,10 +141,13 @@ def main():
             buy_assets()
 
             # Debrief
-            message = f"""
-            Allocator has executed orders.
-            {compile_message()}
-            """
+            if not calculate_quantities():
+                message = compile_message()
+            else:
+                message = (
+                    "Allocator has executed orders. " +
+                    f"{compile_message()}"
+                )
             texts.text_me(message)
             time.sleep(36000) # sleep for 10 hours
 
