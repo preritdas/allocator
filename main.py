@@ -45,27 +45,19 @@ def cash_balance():
     cash_balance = float(account.cash)
     return cash_balance
 
-def calculate_quantities(cash_balance: float = cash_balance()):
+def calculate_quantities():
     """
     Returns a dictionary of the dollar values for each ETF.
-    Takes a cash_balance float parameter which defaults to 
-    getting the account cash balance using the cash_balance
-    method.
     """
     quantities = {}
+    cash = cash_balance()
     for alloc, etf in zip(allocation, etfs):
-        amount = cash_balance * allocation[alloc]
+        amount = cash * allocation[alloc]
         quantities[etfs[alloc]] = round(amount, 3)
 
     # Check for notional value > 1
     for symbol, amount in quantities.items():
         if amount < 1:
-            print(f"{symbol} amount, {amount}, is less than 1.")
-            print("Sleeping for 10 hours until the next day.")
-            texts.text_me(
-                "Allocator is sleeping until tomorrow because ",
-                f"{symbol}'s notional amount, {amount}, is less than 1."
-            )
             return False
     
     # if all notional values are above 1
@@ -91,15 +83,17 @@ def fractional_order(side: str, symbol: str, amount: float):
         notional = amount
     )
 
-def buy_assets(quantities: dict = calculate_quantities()):
+def buy_assets():
     """
     Uses multiprocessing to execute the orders. 
     Buys the ETFs in the amounts dictated by the 
-    quantities parameter. This is defaulted to the output of
-    the calculate_quantities method.
+    quantities parameter.
     Returns True if notional values were high enough for the
     program to make purchases. Returns False if they're not.
     """
+    # Compute quantities instead of using default parameter
+    quantities = calculate_quantities()
+
     # if get_quantities returned false due to notional value < 1
     if not quantities:
         print(
@@ -116,12 +110,17 @@ def buy_assets(quantities: dict = calculate_quantities()):
         process.start()
     return True
 
-def compile_message(quantities = calculate_quantities()):
+def compile_message():
     """Compiles the message for update on execution."""
+    # Calculate quantities instead of using default parameter
+    quantities = calculate_quantities()
+
     # If a notional value was < 1
     if not quantities:
         print("New compile message because quantities were too low.")
-        message = "Skipping today because a quantity was less than 1."
+        message = ("Allocator is skipping today because "\
+            "a quantity was less than 1."
+        )
         return message
 
     message = "Bought "
@@ -137,11 +136,11 @@ def main():
 
     while True:
         # if it's market hours and not saturday or sunday
-        if 6.6 < kit.time_decimal() < 12.9 and kit.weekday_int() <= 5:
+        if 6.6 < kit.time_decimal() < 19 and kit.weekday_int() <= 5:
             buy_assets()
 
             # Debrief
-            if not calculate_quantities():
+            if not calculate_quantities(): # if notional value too low
                 message = compile_message()
             else:
                 message = (
