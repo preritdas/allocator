@@ -13,12 +13,18 @@ nexmo_client = nexmo.Client(
 # Instantiate sms object
 sms = nexmo.Sms(client = nexmo_client)
 
-def text_me(message: str):
+def text_me(*messages: str):
+    # Create the message
+
+    text_content = ''
+    for item in messages:
+        text_content += item
+
     text_response = sms.send_message(
         {
             "from": _keys.nexmo_sender,
             "to": _keys.nexmo_my_number,
-            "text": message
+            "text": text_content
         }
     )
     return True if text_response["messages"][0]["status"] == '0' else False
