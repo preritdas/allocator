@@ -38,6 +38,14 @@ for alloc, etf in zip(allocation, etfs):
         raise Exception(
             "Error matching allocation to etfs in global parameters."
         )
+# Check for total allocation <= 1
+allocation_sum = 0
+for sector, amount in allocation.items():
+    allocation_sum += amount
+if allocation_sum > 1:
+    raise Exception(
+        "The global parameter allocation sums to more than one full account."
+    )
 
 def cash_balance():
     """Returns a float of the account cash balance."""
@@ -111,7 +119,13 @@ def buy_assets():
     return True
 
 def compile_message():
-    """Compiles the message for update on execution."""
+    """
+    Compiles the message for update on execution.
+    If calculate_quantities returns a False due to 
+    notional value being under 1, compile_message 
+    will return a message saying Allocator is skipping
+    the day.
+    """
     # Calculate quantities instead of using default parameter
     quantities = calculate_quantities()
 
