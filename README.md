@@ -4,7 +4,7 @@ _Currently, the source code for this project is private. It will be made availab
 
 ----
 
-An automated portfolio manager that constantly rebalances holdings to match a pre-defined sectoral division. For example, an allocation in `main.py`'s global parameters might look like:
+Allocator is an automated portfolio manager that constantly rebalances holdings to match a pre-defined sectoral division. For example, an allocation in `main.py`'s global parameters might look like:
 
 ```python
 allocation = {
