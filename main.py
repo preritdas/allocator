@@ -81,7 +81,7 @@ def fractional_order(side: str, symbol: str, amount: float):
     side = side.lower()
     if side != 'buy' and side != 'sell':
         raise Exception(
-            "side parameter of fractiona_order was inputted incorrectly."
+            "side parameter of fractional_order was inputted incorrectly."
         )
     
     # Submit the order
