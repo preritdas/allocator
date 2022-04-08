@@ -156,7 +156,7 @@ def main():
 
     while True:
         # if it's market hours and not saturday or sunday
-        if 6.6 < kit.time_decimal() < 19 and kit.weekday_int() <= 5:
+        if 6.6 < kit.time_decimal() < 13 and kit.weekday_int() <= 5:
             buy_assets()
 
             # Debrief
