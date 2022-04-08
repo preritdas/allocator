@@ -1,10 +1,15 @@
+# Non-local imports
 import alpaca_trade_api as alpaca_api
 import mypytoolkit as kit
 
+# Local imports
 import time
+
+# Project modules
 import multiprocessing as mp
 import texts
 import _keys
+
 
 # Instantiate Alpaca API
 alpaca = alpaca_api.REST(
@@ -46,6 +51,7 @@ if allocation_sum > 1:
     raise Exception(
         "The global parameter allocation sums to more than one full account."
     )
+
 
 def cash_balance():
     """Returns a float of the account cash balance."""
@@ -163,6 +169,7 @@ def main():
                 )
             texts.text_me(message)
             time.sleep(36000) # sleep for 10 hours
+
 
 if __name__ == "__main__":
     main()
