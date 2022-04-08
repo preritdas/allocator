@@ -36,7 +36,7 @@ def text_me(*messages: str):
         }
     )
     try:
-        return True if response["messages"][0]["status"] == '0' else False
+        return True if text_response["messages"][0]["status"] == '0' else False
     except TypeError as e: # TypeError: byte indices must be integers or slices, not str
         return None
         
