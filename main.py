@@ -65,12 +65,12 @@ def calculate_quantities():
     """
     quantities = {}
     cash = cash_balance()
-    for alloc in allocation: 
+    for alloc in allocation:
         amount = cash * allocation[alloc]
         quantities[etfs[alloc]] = round(amount, 3)
 
     # Check for notional value > 1
-    for symbol, amount in quantities.items():
+    for amount in quantities.values():
         if amount < 1:
             return False
     
@@ -149,7 +149,6 @@ def compile_message():
 
     # End the message with a period
     return message[0:-2] + "."
-    
 
 def main():
     """Main execution function."""
