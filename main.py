@@ -197,10 +197,10 @@ def allocation_variance(message: bool = False, allocation_input: dict = None):
         response[sector] = round(variance * 100, 3)
 
     if message:
-        message_response = ""
+        message_response = "In our account, "
         for sector, variance in response.items():
-            message_response += f"In our account, {sector} is off by {variance}%. "
-        return message_response
+            message_response += f"{sector} is off by {variance}%, "
+        return message_response[0:-2] + "."  # remove space and comma and add period
     else:
         return response
 
