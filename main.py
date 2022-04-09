@@ -232,10 +232,13 @@ def main():
             buy_assets()
             
             # Debrief
+            print(compile_message())
             texts.text_me(compile_message())
             # Sector and position performance update
+            print(sector_update())
             texts.text_me(sector_update())
             # Allocation variance (usually Fridays but every day for testing/debugging)
+            print(allocation_variance(message = True))
             texts.text_me(allocation_variance(message = True))
 
             # Wait until market is closed
