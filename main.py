@@ -230,16 +230,17 @@ def main():
         # if it's market hours and not saturday or sunday
         if 6.6 < kit.time_decimal() < 13 and kit.weekday_int() <= 5:
             buy_assets()
+            
             # Debrief
             texts.text_me(compile_message())
-
-            # Wait until market close
-            while kit.time_decimal() < 13.1:
-                time.sleep(1)
             # Sector and position performance update
             texts.text_me(sector_update())
             # Allocation variance (usually Fridays but every day for testing/debugging)
             texts.text_me(allocation_variance(message = True))
+
+            # Wait until market is closed
+            while kit.time_decimal() < 13.1:
+                time.sleep(10)
 
 
 if __name__ == "__main__":
