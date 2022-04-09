@@ -25,7 +25,8 @@ allocation = {
     "Domestic Small Cap": 0.02,
     "International": 0.18,
     "Short Term Bonds": 0.12,
-    "Aggregate Bonds": 0.28
+    "Aggregate Bonds": 0.23,
+    "Crypto": 0.05
 }
 
 etfs = {
@@ -34,7 +35,8 @@ etfs = {
     "Domestic Small Cap": 'IJR',
     "International": 'IXUS',
     "Short Term Bonds": 'ISTB',
-    "Aggregate Bonds": 'AGG'
+    "Aggregate Bonds": 'AGG',
+    "Crypto": 'BTCUSD'
 }
 
 # Check for equality
@@ -126,7 +128,7 @@ def buy_assets():
 
 def compile_message():
     """
-    Compiles the message for update on execution.
+    Compiles a tuple of the message for update on execution.
     If calculate_quantities returns a False due to 
     notional value being under 1, compile_message 
     will return a message saying Allocator is skipping
@@ -137,18 +139,17 @@ def compile_message():
 
     # If a notional value was < 1
     if not quantities:
-        print("New compile message because quantities were too low.")
-        message = ("Allocator is skipping today because "\
+        message = ("Allocator is not executing orders today because "\
             "a quantity was less than 1."
         )
-        return message
+        return (message, sector_update())
 
-    message = "Bought "
+    message = "Orders have been executed. Bought "
     for symbol, amount in quantities.items():
         message += f"{amount} of {symbol}, "
 
     # End the message with a period
-    return message[0:-2] + "."
+    return (message[0:-2] + ".", sector_update())
 
 # --- Account Reading ----
 def account_equity():
@@ -179,25 +180,31 @@ def true_live_allocation():
     for position in account_positions:
         if position.symbol in etfs.values():
             # Get the sector of the symbol with reversed dictionary
-            position_sector = kit.reverse_dict(allocation)[position.symbol]
+            position_sector = kit.reverse_dict(etfs)[position.symbol]
             # Get the proportion of account balance
-            proportion = position.market_value / account_equity()
+            proportion = float(position.market_value) / account_equity()
             # Assign results to true_allocation
             true_allocation[position_sector] = proportion
 
     return true_allocation
 
-def allocation_variance(true_live_allocation: dict = None):
+def allocation_variance(message: bool = False, allocation_input: dict = None):
     """Returns a dictionary of the difference between true and expected allocation."""
-    if true_live_allocation is None:
-        true_live_allocation = true_live_allocation()
+    if allocation_input is None:
+        allocation_input = true_live_allocation()
     
     response = {}
-    for sector, alloc in true_live_allocation.items():
-        variance = allocation[sector] - alloc
-        response[sector] = variance
-    
-    return response
+    for sector, alloc in allocation_input.items():
+        variance = alloc - allocation[sector]
+        response[sector] = round(variance * 100, 3)
+
+    if message:
+        message_response = ""
+        for sector, variance in response.items():
+            message_response += f"In our account, {sector} is off by {variance}%. "
+        return message_response
+    else:
+        return response
 
 def sector_update():
     """Returns an update message of daily and lifetime performance per sector."""
@@ -228,16 +235,14 @@ def main():
             buy_assets()
 
             # Debrief
-            if not calculate_quantities(): # if notional value too low
-                message = compile_message()
-            else:
-                message = (
-                    "Allocator has executed orders. " +
-                    f"{compile_message()}"
-                )
-            texts.text_me(message)
+            for message in compile_message():
+                texts.text_me(message)
+
+            # Allocation variance (usually Fridays but every day for testing/debugging)
+            texts.text_me(allocation_variance(message = True))
+
             time.sleep(36000) # sleep for 10 hours
 
 
 if __name__ == "__main__":
-    print(sector_update())
+    main()
