@@ -155,6 +155,19 @@ def account_equity():
     """Returns a float of the account's current equity value."""
     return float(alpaca.get_account().equity)
 
+def relevant_positions():
+    """
+    Returns a list of Alpaca positions objects that are covered by the `etfs`.
+    """
+    alpaca_positions = alpaca.list_positions()
+    
+    response = []
+    for position in alpaca_positions:
+        if position.symbol in etfs.values():
+            response.append(position)
+    
+    return response
+
 def true_live_allocation():
     """
     Returns a dictionary, formatted like `allocation`, with
@@ -173,6 +186,37 @@ def true_live_allocation():
             true_allocation[position_sector] = proportion
 
     return true_allocation
+
+def allocation_variance(true_live_allocation: dict = None):
+    """Returns a dictionary of the difference between true and expected allocation."""
+    if true_live_allocation is None:
+        true_live_allocation = true_live_allocation()
+    
+    response = {}
+    for sector, alloc in true_live_allocation.items():
+        variance = allocation[sector] - alloc
+        response[sector] = variance
+    
+    return response
+
+def sector_update():
+    """Returns an update message of daily and lifetime performance per sector."""
+    account_positions = relevant_positions()
+    
+    response = ""
+    for position in account_positions:
+        position_sector = kit.reverse_dict(etfs)[position.symbol]
+        sector_change = round(float(position.change_today), 3)
+        sector_direction = "up" if sector_change > 0 else "down"
+        lifetime_performance = round(float(position.unrealized_intraday_plpc), 3)
+        lifetime_performance_direction = "up" if lifetime_performance > 0 else "down"
+        # Sector update
+        response += f"{position_sector} is {sector_direction} {sector_change}% today. "
+        # Position update
+        response += f"Our position is {lifetime_performance_direction} "
+        response += f"{lifetime_performance}% cumulatively."
+
+    return response
 
 def main():
     """Main execution function."""
@@ -196,4 +240,4 @@ def main():
 
 
 if __name__ == "__main__":
-    print(true_live_allocation())
+    print(sector_update())
