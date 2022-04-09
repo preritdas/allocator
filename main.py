@@ -146,7 +146,7 @@ def compile_message():
 
     message = "Orders have been executed. Bought "
     for symbol, amount in quantities.items():
-        message += f"{amount} of {symbol}, "
+        message += f"${amount} of {symbol}, "
 
     # End the message with a period
     return (message[0:-2] + ".", sector_update())
