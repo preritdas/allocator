@@ -150,6 +150,30 @@ def compile_message():
     # End the message with a period
     return message[0:-2] + "."
 
+# --- Account Reading ----
+def account_equity():
+    """Returns a float of the account's current equity value."""
+    return float(alpaca.get_account().equity)
+
+def true_live_allocation():
+    """
+    Returns a dictionary, formatted like `allocation`, with
+    the true live account allocation by sector.
+    """
+    true_allocation = {}
+
+    account_positions = alpaca.list_positions()
+    for position in account_positions:
+        if position.symbol in etfs.values():
+            # Get the sector of the symbol with reversed dictionary
+            position_sector = kit.reverse_dict(allocation)[position.symbol]
+            # Get the proportion of account balance
+            proportion = position.market_value / account_equity()
+            # Assign results to true_allocation
+            true_allocation[position_sector] = proportion
+
+    return true_allocation
+
 def main():
     """Main execution function."""
     print("Allocator is online.")
@@ -172,4 +196,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    print(true_live_allocation())
