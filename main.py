@@ -65,7 +65,7 @@ def calculate_quantities():
     """
     quantities = {}
     cash = cash_balance()
-    for alloc, etf in zip(allocation, etfs):
+    for alloc in allocation: 
         amount = cash * allocation[alloc]
         quantities[etfs[alloc]] = round(amount, 3)
 
@@ -149,6 +149,7 @@ def compile_message():
 
     # End the message with a period
     return message[0:-2] + "."
+    
 
 def main():
     """Main execution function."""
