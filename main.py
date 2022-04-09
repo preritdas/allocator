@@ -128,7 +128,7 @@ def buy_assets():
 
 def compile_message():
     """
-    Compiles a tuple of the message for update on execution.
+    Compiles a message with a summary of executions.
     If calculate_quantities returns a False due to 
     notional value being under 1, compile_message 
     will return a message saying Allocator is skipping
@@ -142,14 +142,14 @@ def compile_message():
         message = ("Allocator is not executing orders today because "\
             "a quantity was less than 1."
         )
-        return (message, sector_update())
+        return message 
 
     message = "Orders have been executed. Bought "
     for symbol, amount in quantities.items():
         message += f"${amount} of {symbol}, "
 
     # End the message with a period
-    return (message[0:-2] + ".", sector_update())
+    return message[0:-2] + "."
 
 # --- Account Reading ----
 def account_equity():
@@ -166,7 +166,6 @@ def relevant_positions():
     for position in alpaca_positions:
         if position.symbol in etfs.values():
             response.append(position)
-    
     return response
 
 def true_live_allocation():
@@ -185,7 +184,6 @@ def true_live_allocation():
             proportion = float(position.market_value) / account_equity()
             # Assign results to true_allocation
             true_allocation[position_sector] = proportion
-
     return true_allocation
 
 def allocation_variance(message: bool = False, allocation_input: dict = None):
@@ -222,7 +220,6 @@ def sector_update():
         # Position update
         response += f"Our position is {lifetime_performance_direction} "
         response += f"{lifetime_performance}% cumulatively."
-
     return response
 
 def main():
@@ -233,15 +230,16 @@ def main():
         # if it's market hours and not saturday or sunday
         if 6.6 < kit.time_decimal() < 13 and kit.weekday_int() <= 5:
             buy_assets()
-
             # Debrief
-            for message in compile_message():
-                texts.text_me(message)
+            texts.text_me(compile_message())
 
+            # Wait until market close
+            while kit.time_decimal() < 13.1:
+                time.sleep(1)
+            # Sector and position performance update
+            texts.text_me(sector_update())
             # Allocation variance (usually Fridays but every day for testing/debugging)
             texts.text_me(allocation_variance(message = True))
-
-            time.sleep(36000) # sleep for 10 hours
 
 
 if __name__ == "__main__":
