@@ -25,8 +25,7 @@ allocation = {
     "Domestic Small Cap": 0.02,
     "International": 0.18,
     "Short Term Bonds": 0.12,
-    "Aggregate Bonds": 0.23,
-    "Crypto": 0.05
+    "Aggregate Bonds": 0.28
 }
 
 etfs = {
@@ -35,8 +34,7 @@ etfs = {
     "Domestic Small Cap": 'IJR',
     "International": 'IXUS',
     "Short Term Bonds": 'ISTB',
-    "Aggregate Bonds": 'AGG',
-    "Crypto": 'BTCUSD'
+    "Aggregate Bonds": 'AGG'
 }
 
 # Check for equality
