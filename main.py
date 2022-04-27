@@ -197,7 +197,7 @@ def allocation_variance(message: bool = False, allocation_input: dict = None):
     if message:
         message_response = "In our account, "
         for sector, variance in response.items():
-            message_response += f"{sector} is off by {variance}%, "
+            message_response += f"{sector}'s allocation is off by {variance}%, "
         # Check if there are any positions
         if len(response) > 0:
             return message_response[0:-2] + "."  # remove space and comma and add period
