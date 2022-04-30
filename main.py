@@ -53,15 +53,18 @@ if allocation_sum > 1:
     )
 
 
-def cash_balance():
+def cash_balance() -> float:
     """Returns a float of the account cash balance."""
     account = alpaca.get_account()
     cash_balance = float(account.cash)
     return cash_balance
 
-def calculate_quantities():
+def calculate_quantities() -> dict:
     """
     Returns a dictionary of the dollar values for each ETF.
+    If any value is less than one (less than minimum for a fractional order),
+    the function returns False so other functions can recognize that the
+    day must be skipped.
     """
     quantities = {}
     cash = cash_balance()
@@ -77,7 +80,7 @@ def calculate_quantities():
     # if all notional values are above 1
     return quantities
 
-def fractional_order(side: str, symbol: str, amount: float):
+def fractional_order(side: str, symbol: str, amount: float) -> None:
     """
     Submits a fractional order. Requires parameters for side, 
     symbol, and amount.
@@ -97,7 +100,7 @@ def fractional_order(side: str, symbol: str, amount: float):
         notional = amount
     )
 
-def buy_assets():
+def buy_assets() -> bool:
     """
     Uses multiprocessing to execute the orders. 
     Buys the ETFs in the amounts dictated by the 
@@ -124,7 +127,7 @@ def buy_assets():
         process.start()
     return True
 
-def compile_message():
+def compile_message() -> str:
     """
     Compiles a message with a summary of executions.
     If calculate_quantities returns a False due to 
@@ -150,11 +153,11 @@ def compile_message():
     return message[0:-2] + "."
 
 # --- Account Reading ----
-def account_equity():
+def account_equity() -> float:
     """Returns a float of the account's current equity value."""
     return float(alpaca.get_account().equity)
 
-def relevant_positions():
+def relevant_positions() -> list:
     """
     Returns a list of Alpaca positions objects that are covered by the `etfs`.
     """
@@ -166,7 +169,7 @@ def relevant_positions():
             response.append(position)
     return response
 
-def true_live_allocation():
+def true_live_allocation() -> dict:
     """
     Returns a dictionary, formatted like `allocation`, with
     the true live account allocation by sector.
@@ -184,7 +187,10 @@ def true_live_allocation():
             true_allocation[position_sector] = proportion
     return true_allocation
 
-def allocation_variance(message: bool = False, allocation_input: dict = None):
+def allocation_variance(
+    message: bool = False, 
+    allocation_input: dict = None
+) -> dict:
     """Returns a dictionary of the difference between true and expected allocation."""
     if allocation_input is None:
         allocation_input = true_live_allocation()
@@ -206,7 +212,7 @@ def allocation_variance(message: bool = False, allocation_input: dict = None):
     else:
         return response
 
-def sector_update():
+def sector_update() -> str:
     """Returns an update message of daily and lifetime performance per sector."""
     account_positions = relevant_positions()
     
@@ -224,7 +230,7 @@ def sector_update():
         response += f"{lifetime_performance}% cumulatively."
     return response
 
-def main():
+def main() -> None:
     """Main execution function."""
     print("Allocator is online.")
 
