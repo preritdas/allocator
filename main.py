@@ -74,10 +74,10 @@ def calculate_quantities() -> dict:
 
     # Check for notional value > 1
     for amount in quantities.values():
-        if amount < 1:
+        if amount < 1 and amount != 0:
             return False
     
-    # if all notional values are above 1
+    # if all notional values are above 1 or == 0
     return quantities
 
 def fractional_order(side: str, symbol: str, amount: float) -> None:
