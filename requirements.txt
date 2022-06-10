@@ -1,6 +1,6 @@
 aiohttp==3.8.1
 aiosignal==1.2.0
-alpaca-trade-api==2.1.0
+alpaca-trade-api==2.2.0
 async-timeout==4.0.2
 attrs==21.4.0
 certifi==2021.10.8
