@@ -4,14 +4,14 @@ import time
 # Project modules
 import allocation
 import rebalancing
-import texts
+import delivery
 import utils
 import errors
 
 
 def deliver_update(rebalances: dict[str, float], allocations: dict[str, float]):
     """Texts an update of all that was done. Eventually, this will use email."""
-    texts.text_me(
+    delivery.text_me(
         f"""
         Rebalances attemped: {rebalances}
 

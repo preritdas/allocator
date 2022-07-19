@@ -2,9 +2,9 @@
 
 
 # Project modules
-import texts
+import delivery
 
 
 def report_error(error: str) -> None:
     content = "Error reported: " + error
-    texts.text_me(content)
+    delivery.text_me(content)
