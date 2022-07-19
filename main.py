@@ -13,9 +13,9 @@ import _keys
 
 # Instantiate Alpaca API
 alpaca = alpaca_api.REST(
-    key_id = _keys.alpaca_API_Key,
-    secret_key = _keys.alpaca_API_Secret,
-    base_url = _keys.alpaca_base_url
+    key_id = _keys.Alpaca.API_KEY,
+    secret_key = _keys.Alpaca.API_SECRET,
+    base_url = _keys.Alpaca.BASE_URL
 )
 
 # ---- GLOBAL PARAMETERS ----
@@ -44,10 +44,7 @@ for alloc, etf in zip(allocation, etfs):
             "Error matching allocation to etfs in global parameters."
         )
 # Check for total allocation <= 1
-allocation_sum = 0
-for sector, amount in allocation.items():
-    allocation_sum += amount
-if allocation_sum > 1:
+if sum(allocation.values()) > 1:
     raise Exception(
         "The global parameter allocation sums to more than one full account."
     )
