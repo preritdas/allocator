@@ -36,7 +36,7 @@ def fractional_order(side: str, symbol: str, amount: float) -> None:
     side = side.lower()
     if side not in ('buy', 'sell'):
         raise Exception("Side parameter was inputted incorrectly.")
-    
+
     # Submit the order
     alpaca.submit_order(
         symbol = symbol,
