@@ -24,7 +24,7 @@ def text_me(*messages: str):
     """
     # Create the message
 
-    text_content = ''
+    text_content = 'Message from Allocator: '
     for item in messages:
         text_content += item
 
