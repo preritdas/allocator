@@ -1,4 +1,4 @@
-"""Market clock, etc."""
+"""Account, orders, market clock, etc."""
 
 # Non-local imports
 import mypytoolkit as kit
@@ -19,7 +19,34 @@ alpaca = alpaca_api.REST(
 )
 
 
+# Account and orders
+
+def account_equity() -> float:
+    return float(alpaca.get_account().equity)
+
+
+def cash_balance() -> float:
+    """Reads available cash to trade and returns a float."""
+    account = alpaca.get_account()
+    return float(account.cash)
+
+
+def fractional_order(side: str, symbol: str, amount: float) -> None:
+    """Give `side` as 'buy' or 'sell'."""
+    side = side.lower()
+    if side not in ('buy', 'sell'):
+        raise Exception("Side parameter was inputted incorrectly.")
+    
+    # Submit the order
+    alpaca.submit_order(
+        symbol = symbol,
+        side = side,
+        notional = amount,
+    )
+
+
 # Market clock
+
 last_market_open_verification: float = 0.00
 
 def market_open() -> bool:
