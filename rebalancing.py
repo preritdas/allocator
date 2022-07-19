@@ -1,36 +1,4 @@
 # Non-local imports
-import alpaca_trade_api
-
-# Project modules
-import _keys
-
-
-# Instantiate Alpaca API
-alpaca = alpaca_trade_api.REST(
-    key_id = _keys.Alpaca.API_KEY,
-    secret_key = _keys.Alpaca.API_SECRET,
-    base_url = _keys.Alpaca.BASE_URL
-)
-
-
-# Ideal allocations
-allocation = {
-    "Domestic Large Cap": 0.35,
-    "Domestic Mid Cap": 0.05,
-    "Domestic Small Cap": 0.02,
-    "International": 0.18,
-    "Short Term Bonds": 0.12,
-    "Aggregate Bonds": 0.28
-}
-
-etfs = {
-    "Domestic Large Cap": 'VOO',
-    "Domestic Mid Cap": 'IJH',
-    "Domestic Small Cap": 'IJR',
-    "International": 'IXUS',
-    "Short Term Bonds": 'ISTB',
-    "Aggregate Bonds": 'AGG'
-}
 
 etf_allocation = {etf: alloc for etf in etfs.values() for alloc in allocation.values()}
 
@@ -81,7 +49,3 @@ def correct_deltas() -> None:
                 side = 'buy',
                 notional = deltas[position] * -1
             )
-
-
-if __name__ == '__main__':
-    correct_deltas()
