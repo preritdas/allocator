@@ -11,6 +11,8 @@ class Nexmo:
 
 
 class Gmail:
+    smtp_host: str = 'smtp.gmail.com'
+    smtp_port: int = 465
     email_address = '' 
     password = ''
 
