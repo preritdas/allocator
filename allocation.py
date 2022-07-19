@@ -9,10 +9,10 @@ more than the total account value is to be allocated to various sectors."""
 import alpaca_trade_api as alpaca_api
 
 # Local imports
-import multiprocessing as mp
+import threading
 
 # Project modules
-import allocation
+import utils
 import _keys
 
 
@@ -43,17 +43,11 @@ alpaca = alpaca_api.REST(
 )
 
 
-def _cash_balance() -> float:
-    """Reads available cash to trade and returns a float."""
-    account = alpaca.get_account()
-    return float(account.cash)
-
-
 def calculate_quantities() -> dict[str, float]:
     quantities = {}
-    cash = _cash_balance()
+    cash = utils.cash_balance()
 
-    for alloc in allocation.allocation.values():
+    for alloc in allocation.values():
         amount = alloc[0] * cash
         if amount < 2:
             return {}
@@ -62,27 +56,13 @@ def calculate_quantities() -> dict[str, float]:
     return quantities
 
 
-def _fractional_order(side: str, symbol: str, amount: float) -> None:
-    """Give `side` as 'buy' or 'sell'."""
-    side = side.lower()
-    if side not in ('buy', 'sell'):
-        raise Exception("Side parameter was inputted incorrectly.")
-    
-    # Submit the order
-    alpaca.submit_order(
-        symbol = symbol,
-        side = side,
-        notional = amount,
-    )
-
-
 def allocate() -> dict:
     """Submits orders based on `calculate_quantities`."""
     quantities = calculate_quantities()
 
     for symbol, amount in quantities.items():
-        process = mp.Process(
-            target = _fractional_order,
+        process = threading.Thread(
+            target = utils.fractional_order,
             args = ('buy', symbol, amount)
         )
         process.start()
