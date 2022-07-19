@@ -11,13 +11,16 @@ import errors
 
 def deliver_update(rebalances: dict[str, float], allocations: dict[str, float]):
     """Texts an update of all that was done. Eventually, this will use email."""
-    delivery.text_me(
+    update = (
         f"""
         Rebalances attemped: {rebalances}
 
         Allocations made: {allocations}
         """
     )
+
+    delivery.text_me(update)
+    delivery.email_me(update, subject="Allocator Daily Report")
 
 
 def main() -> None:
