@@ -18,5 +18,6 @@ class Gmail:
 
 
 class User:
+    name = ''
     phone_number: str = ''
     email_address = ''
