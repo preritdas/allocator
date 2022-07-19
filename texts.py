@@ -6,8 +6,8 @@ import _keys
 
 # Instantiate Nexmo client
 nexmo_client = nexmo.Client(
-    key = _keys.nexmo_api_key,
-    secret = _keys.nexmo_api_secret 
+    key = _keys.Nexmo.api_key,
+    secret = _keys.Nexmo.api_secret
 )
 
 # Instantiate sms object
@@ -28,15 +28,10 @@ def text_me(*messages: str):
     for item in messages:
         text_content += item
 
-    text_response = sms.send_message(
+    sms.send_message(
         {
-            "from": _keys.nexmo_sender,
-            "to": _keys.nexmo_my_number,
+            "from": _keys.Nexmo.sender,
+            "to": _keys.User.phone_number,
             "text": text_content
         }
     )
-    try:
-        return True if text_response["messages"][0]["status"] == '0' else False
-    except TypeError as e: # TypeError: byte indices must be integers or slices, not str
-        return None
-        
