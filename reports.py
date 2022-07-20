@@ -15,7 +15,7 @@ def _account_summary() -> str:
     positions: dict[str, dict[str, float]] = {}
     for position in account_positions:
         # If the symbol isn't a tracked ETF, show the actual symbol
-        symbol = sector_from_etf.get(position.symbol, symbol)
+        symbol = sector_from_etf.get(position.symbol, position.symbol)
         positions[symbol] = {
             "Market Value": round(float(position.market_value), 2),
             "Unrealized Profit": round(float(position.unrealized_pl), 2)
