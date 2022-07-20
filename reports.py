@@ -4,6 +4,12 @@ import mypytoolkit as kit
 # Project modules
 import delivery
 import allocation
+from allocation import alpaca
+
+
+def _account_summary() -> str:
+    """Creates an account summary string for use in `deliver_update`."""
+    print(alpaca.get_account().equity)
 
 
 def deliver_update(allocations: dict[str, float], rebalances: dict[str, float]) -> None:
@@ -40,3 +46,7 @@ def deliver_update(allocations: dict[str, float], rebalances: dict[str, float]) 
 
     delivery.text_me(update)
     delivery.email_me(update, subject="Allocator Daily Report")
+
+
+if __name__ == '__main__':
+    print(_account_summary())

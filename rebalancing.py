@@ -11,15 +11,7 @@ import time
 import _keys
 import utils
 import errors
-from allocation import allocation
-
-
-# Instantiate Alpaca API
-alpaca = alpaca_api.REST(
-    key_id = _keys.Alpaca.API_KEY,
-    secret_key = _keys.Alpaca.API_SECRET,
-    base_url = _keys.Alpaca.BASE_URL
-)
+from allocation import allocation, alpaca  # get Alpaca directly from allocation
 
 
 # Configs
