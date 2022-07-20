@@ -39,20 +39,29 @@ def _fractional_order_errorhandling(side: str, symbol: str, amount: float):
             raise alpaca_api.rest.APIError(e)
 
 
-def _current_positions() -> dict[str, float]:
+def _current_positions() -> dict[str, float] | str:
     """Returns a dictionary with keys being the symbol name and values
     being a float of the market value of the position in the account.
     Only searches for symbols mentioned in the allocation."""
     etfs: list[str] = [value[1] for value in allocation.values()]
-    return {etf: float(alpaca.get_position(etf).market_value) for etf in etfs}
+    try:
+        return {etf: float(alpaca.get_position(etf).market_value) for etf in etfs}
+    except alpaca_api.rest.APIError as e:
+        if str(e) == "position does not exist":
+            return(
+                "Positions not found. " 
+                "Allow allocation to automatically allocate account cash."
+            )
 
-
-def positional_deltas() -> dict[str, float]:
+def positional_deltas() -> dict[str, float] | str:
     """Returns a dict of how off each position is in the account based on the
     ideal etf allocations. A negative value means the account is _under_ the
     expectation, so more of it should be bought to compensate."""
     account_total = utils.account_equity()
     positions = _current_positions()
+
+    if isinstance(positions, str):  # if there was an ignorable error
+        return positions
 
     ideal_alloc = {}
     for etf, alloc in etf_allocations.items():
@@ -86,6 +95,8 @@ def rebalance_portfolio() -> dict[str, float] | str:
         return "Cannot rebalance portfolio as untracked positions were detected."
 
     deltas = positional_deltas()
+    if isinstance(deltas, str):  # if there was an ignorable, deliverable error
+        return deltas
 
     # Sell orders first to free up buying power
     for position, delta in deltas.items():
