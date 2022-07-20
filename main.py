@@ -14,7 +14,11 @@ def main() -> None:
     while True:
         if utils.market_open():
             rebalances = rebalancing.rebalance_portfolio()
+            time.sleep(5)  # ensure positions can be recognized by subsequent calls
+
             allocations = allocation.allocate_cash()
+            time.sleep(5)  
+
             reports.deliver_update(allocations, rebalances)
             time.sleep(43_200)  # sleep for half a day
         else:
