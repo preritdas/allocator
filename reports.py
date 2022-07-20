@@ -1,6 +1,5 @@
 # Non-local imports
 import mypytoolkit as kit
-from numpy import isin
 
 # Project modules
 import delivery
