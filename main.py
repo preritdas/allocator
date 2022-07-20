@@ -10,7 +10,7 @@ import errors
 
 
 def main() -> None:
-    """Executes `buy_assets` every day at market open."""
+    """Rebalances and allocates portfolio cash every market day at the open."""
     while True:
         if utils.market_open():
             rebalances = rebalancing.rebalance_portfolio()
