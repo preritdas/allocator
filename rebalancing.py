@@ -1,5 +1,4 @@
 # Non-local imports
-from tempfile import TemporaryFile
 import alpaca_trade_api as alpaca_api
 
 # Local imports
@@ -8,7 +7,6 @@ import threading
 import time
 
 # Project modules
-import _keys
 import utils
 import errors
 from allocation import allocation, alpaca  # get Alpaca directly from allocation
