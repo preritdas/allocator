@@ -39,6 +39,9 @@ with open('portfolios.json', 'r') as portfolios_file:
         key: tuple(val) for key, val in allocation.items()
     }
 
+# Reverse lookup possibility
+sector_from_etf = {val[1]: key for key, val in allocation.items()}
+
 
 # Checking for total account allocation size
 total_account = 0
