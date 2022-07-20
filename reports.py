@@ -24,13 +24,13 @@ def _account_summary() -> str:
         positions_str += (
             f"{sector} is "
             f"{'up $' if attributes['Unrealized Profit'] > 0 else 'down -$'}"
-            f"{abs(attributes['Unrealized Profit']):,} in total, with a market value of "
-            f"${attributes['Market Value']:,}.\n"
+            f"{abs(attributes['Unrealized Profit']):,.2f} in total, with a market value of "
+            f"${attributes['Market Value']:,.2f}.\n"
         )
 
     summary = (
         f"The account is {Config.portfolio_type.lower()}, with a "
-        f"total market value of ${utils.account_equity(rounding=2):,}. "
+        f"total market value of ${utils.account_equity(rounding=2):,.2f}. "
         "Below are all positions managed in the account.\n\n"
         f"{positions_str}"
     )
@@ -46,8 +46,8 @@ def deliver_update(
     # If both dictionaries are empty
     if not allocations and (isinstance(rebalances, dict) and not rebalances):
         update = (
-            "No actions were taken today.\n\n----\n\n"
-            "Below is a summary of the account as a whole.\n\n"
+            "No actions were taken today.\n\n"
+            "----\n\nBelow is a summary of the account as a whole.\n\n"
             f"{_account_summary()}"
         )
         delivery.text_me(update)
@@ -58,7 +58,7 @@ def deliver_update(
 
     allocations_str = "" if allocations else "No cash allocations were made today."
     for symbol, amount in allocations.items():
-        allocations_str += f"- Allocated ${amount} of cash to {sector_from_symbol[symbol]}.\n"
+        allocations_str += f"- Allocated ${amount}:,.2f of cash to {sector_from_symbol[symbol]}.\n"
 
     rebalances_str = "" if rebalances else "No positions were rebalanced today."
     if isinstance(rebalances, str):
@@ -66,9 +66,9 @@ def deliver_update(
     elif isinstance(rebalances, dict):
         for symbol, delta in rebalances.items():
             if delta < 0:
-                rebalances_str += f"- Added ${abs(delta)} to {sector_from_symbol[symbol]}.\n"
+                rebalances_str += f"- Added ${abs(delta):,.2f} to {sector_from_symbol[symbol]}.\n"
             elif delta > 0:
-                rebalances_str += f"- Removed ${abs(delta)} from {sector_from_symbol[symbol]}.\n"
+                rebalances_str += f"- Removed ${abs(delta):,.2f} from {sector_from_symbol[symbol]}.\n"
 
     update = (
         f"The following is a summary report of actions taken/attempted by Allocator "
@@ -78,7 +78,7 @@ def deliver_update(
         "Rebalances:\n"
         f"{rebalances_str}"
         "\n\n"
-        "Below is a summary of the account as a whole.\n\n----\n\n"
+        "----\n\nBelow is a summary of the account as a whole."
         f"{_account_summary()}"
         ""
     )
