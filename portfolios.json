@@ -1,0 +1,41 @@
+{
+    "Conservative": 
+        {
+            "Ultra Short-Term Government Bonds": [0.20, "BIL"],
+            "Ultra Short-Term Corporate Bonds": [0.40, "ICSH"],
+            "Short-Term Government Bonds": [0.40, "SHV"]
+        },
+    "Moderately Conservative": 
+        {
+            "Medium Company Stocks": [0.04, "IJG"],
+            "International Stocks": [0.12, "IXUS"],
+            "Short-Term USD Bonds": [0.18, "ISTB"],
+            "US Aggregate Bonds": [0.42, "AGG"],
+            "Large Company Stocks": [0.24, "VOO"]
+        },
+    "Moderate": 
+        {
+            "Domestic Large Cap": [0.35, "VOO"],
+            "Domestic Mid Cap": [0.05, "IJH"],
+            "Domestic Small Cap": [0.02, "IJR"],
+            "International Stocks": [0.18, "IXUS"],
+            "Short-Term Bonds": [0.12, "ISTB"],
+            "Aggregate Bonds": [0.28, "AGG"]
+        },
+    "Moderately Aggressive": 
+        {
+            "Large Company Stock": [0.47, "VOO"],
+            "Medium Company Stocks": [0.06, "IJH"],
+            "Small Company Stocks": [0.03, "IJR"],
+            "International Stocks": [0.24, "IXUS"],
+            "Short-Term USD Bonds": [0.06, "ISTB"],
+            "US Aggregate Bonds": [0.14, "AGG"]
+        },
+    "Aggressive": 
+        {
+            "Large Company Stocks": [0.55, "VOO"],
+            "Medium Company Stocks": [0.10, "IJH"],
+            "Small Company Stocks": [0.05, "IJR"],
+            "International Stocks": [0.30, "IXUS"]
+        }
+}
