@@ -21,8 +21,12 @@ alpaca = alpaca_api.REST(
 
 # Account and orders
 
-def account_equity() -> float:
-    return float(alpaca.get_account().equity)
+def account_equity(rounding: int = None) -> float:
+    equity = float(alpaca.get_account().equity)
+    if not rounding:
+        return equity
+
+    return round(equity, rounding)
 
 
 def cash_balance() -> float:
