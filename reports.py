@@ -5,7 +5,7 @@ from numpy import isin
 # Project modules
 import delivery
 import allocation
-from allocation import alpaca, Config
+from allocation import alpaca, Config, sector_from_etf
 import utils
 
 
@@ -15,23 +15,23 @@ def _account_summary() -> str:
     account_positions = alpaca.list_positions()
     positions: dict[str, dict[str, float]] = {}
     for position in account_positions:
-        positions[position.symbol] = {
+        positions[sector_from_etf[position.symbol]] = {
             "Market Value": round(float(position.market_value), 2),
             "Unrealized Profit": round(float(position.unrealized_pl), 2)
         }
 
     positions_str = ""
-    for symbol, attributes in positions.items():
+    for sector, attributes in positions.items():
         positions_str += (
-            f"{symbol} is "
+            f"{sector} is "
             f"{'up $' if attributes['Unrealized Profit'] > 0 else 'down -$'}"
             f"{abs(attributes['Unrealized Profit'])} in total, with a market value of "
             f"${attributes['Market Value']}.\n"
         )
 
     summary = (
-        f"The account is on a moderate "
-        f"total market value is ${utils.account_equity(rounding=2)}. "
+        f"The account is {Config.portfolio_type.lower()}, with a "
+        f"total market value of ${utils.account_equity(rounding=2)}. "
         "Below are all positions managed in the account.\n\n"
         f"{positions_str}"
     )
@@ -74,11 +74,12 @@ def deliver_update(
         f"{allocations_str}\n\n"
         "Rebalances:\n"
         f"{rebalances_str}"
+        "\n\n"
+        "Below is a summary of the account as a whole.\n\n"
+        f"{_account_summary()}"
         ""
     )
 
     delivery.text_me(update)
     delivery.email_me(update, subject="Allocator Daily Report")
-
-if __name__ == '__main__':
-    print(_account_summary())
+    
