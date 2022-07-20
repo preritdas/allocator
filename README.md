@@ -1,108 +1,69 @@
 # Allocator
 
-_Currently, the source code for this project is private. It will be made available once retired for public use. When public, the code will be available on this [GitHub repository](https://github.com/preritdas/allocator)._
+Allocator is a fully autonomous, dynamic portfolio manager. It both allocates free account cash to predetermine sectors _and_ reads accounts positions to determine if it should relatively re-balance any positions. This becomes necessary if certain sectors outperform other sectors, resulting in them occupying a larger than defined portion of the account. 
 
-----
 
-Allocator is an automated portfolio manager that constantly rebalances holdings to match a pre-defined sectoral division. For example, an allocation in `main.py`'s global parameters might look like:
+## Portfolios
 
-```python
-allocation = {
-    "Domestic Large Cap": 0.35,
-    "Domestic Mid Cap": 0.05,
-    "Domestic Small Cap": 0.02,
-    "International": 0.18,
-    "Short Term Bonds": 0.12,
-    "Aggregate Bonds": 0.28
-}
-```
+Allocator's predefined portfolios are adapted from [Acorns](https://acorns.com) Invest's risk profiles. Those are true and tested portfolios, packaged into the local database [portfolios.json](portfolios.json). To select a portfolio, simply update the `portfolio_type` configuration element in [config.ini](config.ini). See steps to deployment in the [deployment](##deployment) section. The five supported portfolio types are below.
 
-Every day, Allocator will read the available cash balance and invest in various ETFs such that the account is exposed to the market in as close to the `allocation` as possible. 
+| Portfolio Type | Investment Composition |
+| --- | --- |
+| Conservative | Ultra short-term corporate and government bonds. |
+| Moderately Conservative | Mostly short-term USD/aggregate bonds, with a small exposure in mid-cap and international stocks. |
+| Moderate | Primarily domestic/international stocks, with a sizeable exposure to aggregate bonds. |
+| Moderately Aggressive | Primarily large domestic stocks, with a sizeable exposure in internationals and domestic bonds. |
+| Aggressive | Entirely domestic and international stocks. |
 
-Depositing cash consistently to the account after deployment is _encouraged_ (but not necessary), as this is what gives Allocator the ability to re-invest in all sectors.
 
-Allocator submits several fractional orders to ensure that it can achieve a balance as close as possible to the predefined `allocation`. To ensure rapid execution, when purchases are necessary, allocator will designate the order execution task for each ETF to an independent CPU core. This allows orders to be submitted concurrently and rapidly. 
+## Reports
 
-## Features
+Every day, after Allocator attempts to re-balance the portfolio and allocate free cash, it sends a report of all operations by email and text. A sample daily email report is below. It contains the following information.
 
-All features listed below are functional and have been deployed.
+- Cash allocations
+- Rebalanced positions
+  - Positions shaved
+  - Positions bulked
+  - Notice of unrecognized positions (more info below)
+  - Notice of positions unallocated
+- Account summary
+  - Portfolio type (moderate, etc.)
+  - Account market value (equity)
+  - Each position (including untracked positions) with lifetime unrealized gains and total market value
 
-### Automated Investing
+A screenshot of a sample email report is below.
 
-Allocator reads the underlying account's cash balance every weekday morning. If there is enough cash to invest in all sectors proportionately (minimum of $1 per sector), it will send and execute orders to do so. Otherwise, it will skip the day and continue with its alert protocol (see Updates section). 
+![Sample Email Report](readme-content/sample_email.PNG)
 
-### Allocation Variance
 
-At the end of each week, Allocator will read the underlying account and compare the positions to the optimal `allocation`. It will then calculate the difference between the optimal allocation and true allocation, and text this result to the user (see Updates section). 
+## Deployment
 
-### Updates
+Only two files need to be modified for deployment: [keys (sample).py](_keys%20(sample).py) and [config.ini](config.ini). [keys (sample).py](_keys%20(sample).py) needs to be renamed to `_keys.py` in order to be recognized by Allocator. The following values need to be added or modified in each of the files.
 
-All alerts and updates are sent to the user by text message (see the necessary files section). Allocator has three rounds of updates.
+### `_keys.py`
 
-1. **Execution**: all sectors invested in and their amounts. Or, that there wasn't enough cash to make a round of automatic investments.
-2. **Sector Updates**: the daily performance of each sector the account is invested in, and the lifetime performance of the account's positions in this sector. This includes automatic re-investments: the calculation is made using an adjusted cost-basis after any number of re-investments, so its a true representation of the account's net performance in the sector. 
-3. **Allocation Variance**: every week, the user is briefed on the success of Allocator's automatic investments. For every sector, they are informed of the variance between the true allocation in the account and the optimal `allocation` defined in Allocator's global parameters. 
+| Parameter | Type | Behavior | Source |
+| --- | --- | --- | --- |
+| `Alpaca.API_KEY` | string | Authenticates Alpaca API for trading | Portfolio Dashboard [Alpaca Markets](https://alpaca.markets) |
+| `Alpaca.API_SECRET` | string | Authenticates Alpaca API for trading | Portfolio Dashboard [Alpaca Markets](https://alpaca.markets) |
+| `Alpaca.BASE_URL` | string | Defines the Alpaca API's endpoint | Portfolio Dashboard [Alpaca Markets](https://alpaca.markets)
+| --- | --- | --- | --- |
+| `Nexmo.api_key` | string | Authenticates Nexmo for sending text messages | [Nexmo Dashboard](https://dashboard.nexmo.com) |
+| `Nexmo.api_secret` | string | Authenticates Nexmo for sending text messages | [Nexmo Dashboard](https://dashboard.nexmo.com) |
+| `Nexmo.sender` | string | Specifies which registered Nexmo number to originate text alerts | [Nexmo Dashboard](https://dashboard.nexmo.com)
+| --- | --- | --- | --- |
+| `Gmail.smtp_host` | string | Necessary for authenticating Gmail to send emails | Default is `'smtp.gmail.com'`. More information [here](https://support.google.com/mail/answer/7126229?hl=en#zippy=%2Cstep-check-that-imap-is-turned-on%2Cstep-change-smtp-other-settings-in-your-email-client). |
+| `Gmail.smtp_port` | integer | Necessary for authenticating Gmail to send emails | Default is `465`. More information [here](https://support.google.com/mail/answer/7126229?hl=en#zippy=%2Cstep-check-that-imap-is-turned-on%2Cstep-change-smtp-other-settings-in-your-email-client). |
+| `Gmail.email_address` | string | The Gmail _sender's_ address. | The account used to login to Gmail, as the sender. Can be your own email, if you want your reports to come from yourself. |
+| `Gmail.password` | string | An _app password_. Gmail has revoked support for 'less-secure apps' so you must enable 2FA and generate an 'app password' instead. | [Google Account Settings](https://myaccount.google.com) |
+| --- | --- | --- | --- |
+| `User.name` | string | Your name, for daily reports. | Hopefully you remember your name. |
+| `User.phone_number` | string | Target phone number for error alerts and daily reports. | Must be in the format `'14258193018'` for U.S. phone numbers. |
+| `User.email_address` | string | Target email address for receiving daily reports. | Must be in the format `'youremail@gmail.com'`. |
 
-Below is a sample of the expected alerts on a given trading day. 
+### `config.ini`
 
-```
-(09:35 a.m., market open): Orders have been executed. Bought $35 of VOO, $5 of IJH, $2 of IJR, $18 of IXUS, $12 of ISTB, $23 of AGG, $5 of BTCUSD.
-
-(04:06 p.m., market close): Domestic Large Cap is down 2.23% today. Our position is up 4.15% cumulatively. Domestic Mid Cap is up 1.52% today. Our position is down 2.13% cumulatively. Domestic Small Cap is up 3.14% today. Our position is up 1.53% cumulatively. International is down 0.25% today. Our position is up 1.29% cumulatively. Short Term Bonds is up 0.45% today. Our position is up 0.57% cumulatively. Aggregate bonds is up 0.54% today. Our position is up 0.67% cumulatively. Crypto is down 5.55% today. Our position is up 12.25% cumulatively. 
-
-(04:06 p.m., market close on Friday): In our account, Domestic Large Cap is off by 0.0012%, Domestic Mid Cap is off by 0.0002%, Domestic Small Cap is off by 0.0013%, International is off by 0.00045%, Short Term Bonds is off by 0.0014%, Aggregate Bonds is off by 0.00045%, Crypto is off by 0.014%.
-```
-
-## Files
-
-All of these files are necessary for Allocator to function. 
-
-### main.py
-
-The main execution file. Run this file to run Allocator with `python main.py`, using Python 3.10 (developed with Python 3.10.4). Global parameters are modifiable.
-
-```python
-# ---- GLOBAL PARAMETERS ----
-allocation = {
-    "Domestic Large Cap": 0.35,
-    "Domestic Mid Cap": 0.05,
-    "Domestic Small Cap": 0.02,
-    "International": 0.18,
-    "Short Term Bonds": 0.12,
-    "Aggregate Bonds": 0.23,
-    "Crypto": 0.05
-}
-
-etfs = {
-    "Domestic Large Cap": 'VOO',
-    "Domestic Mid Cap": 'IJH',
-    "Domestic Small Cap": 'IJR',
-    "International": 'IXUS',
-    "Short Term Bonds": 'ISTB',
-    "Aggregate Bonds": 'AGG',
-    "Crypto": 'BTCUSD'
-}
-```
-
-You can designate your own target funds for each sector. 
-
-### texts.py
-
-The primary function of `texts.py` is to define `texts.text_me()`, called in `main.py` when alerting the user. It uses the [Nexmo](https://developer.nexmo.com/api) API and references keys and phone numbers in `_keys.py`. 
-
-### _keys.py
-
-Ensure `_keys.py` contains all the following objects to ensure Allocator runs without errors. 
-
-```python
-# Alpaca Keys
-alpaca_API_Key = 'alpacaAPIkey'
-alpaca_API_Secret = 'alpacaSecretKey'
-alpaca_base_url = 'https://api.alpaca.markets'
-
-# Nexmo
-nexmo_api_key = 'nexmoKey'
-nexmo_api_secret = 'nexmoSecret'
-nexmo_sender = 'registeredNumberAsString'
-nexmo_my_number = 'userNumberAsString'
-```
+| Parameter | Behavior | Default |
+| --- | --- | --- |
+| `rebalance_threshold` | The amount a position must vary from its true proportional value (according to portfolio allocation) in order for Allocator to re-balance it. | 0.01 |
+| `portfolio_type` | User selected portfolio according to those specified in the [portfolios](##portfolios) section.
