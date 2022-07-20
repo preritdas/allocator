@@ -10,20 +10,34 @@ import alpaca_trade_api as alpaca_api
 
 # Local imports
 import threading
+import configparser
+import json  # parse portfolios database
 
 # Project modules
 import utils
 import _keys
 
 
-allocation = {
-    "Domestic Large Cap": (0.35, "VOO"),
-    "Domestic Mid Cap": (0.05, "IJH"),
-    "Domestic Small Cap": (0.02, "IJR"),
-    "International Stocks": (0.18, "IXUS"),
-    "Short Term Bonds": (0.12, "ISTB"),
-    "Aggregate Bonds": (0.28, "AGG")
-}
+# Read user's allocation choice
+class Config:
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    portfolio_type = config['Portfolio']['portfolio_type'].title()
+
+class PortfolioNotFoundError(Exception):
+    pass
+
+with open('portfolios.json', 'r') as portfolios_file:
+    _all_portfolios: dict[str, dict[str, list[float, str]]] = json.load(portfolios_file)
+    if not Config.portfolio_type in _all_portfolios.keys():
+        raise PortfolioNotFoundError(f"{Config.portfolio_type} not found in portfolios database.")
+
+    allocation: dict[str, list[float, str]] = _all_portfolios[Config.portfolio_type]
+    
+    # Preserve tuple immutability for values: convert list values to tuple
+    allocation: dict[str, tuple[float, str]] = {
+        key: tuple(val) for key, val in allocation.items()
+    }
 
 
 # Checking for total account allocation size
