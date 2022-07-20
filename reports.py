@@ -56,7 +56,7 @@ def deliver_update(
 
     sector_from_symbol = {val[1]: key for key, val in allocation.allocation.items()}
 
-    allocations_str = "" if allocations else "No allocations were made today."
+    allocations_str = "" if allocations else "No cash allocations were made today."
     for symbol, amount in allocations.items():
         allocations_str += f"- Allocated ${amount} of cash to {sector_from_symbol[symbol]}.\n"
 
