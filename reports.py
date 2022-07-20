@@ -58,7 +58,7 @@ def deliver_update(
 
     allocations_str = "" if allocations else "No allocations were made today."
     for symbol, amount in allocations.items():
-        allocations_str += f"Allocated ${amount} of cash to {sector_from_symbol[symbol]}.\n"
+        allocations_str += f"- Allocated ${amount} of cash to {sector_from_symbol[symbol]}.\n"
 
     rebalances_str = "" if rebalances else "No positions were rebalanced today."
     if isinstance(rebalances, str):
@@ -66,9 +66,9 @@ def deliver_update(
     elif isinstance(rebalances, dict):
         for symbol, delta in rebalances.items():
             if delta < 0:
-                rebalances_str += f"Added ${abs(delta)} to {sector_from_symbol[symbol]}.\n"
+                rebalances_str += f"- Added ${abs(delta)} to {sector_from_symbol[symbol]}.\n"
             elif delta > 0:
-                rebalances_str += f"Removed ${abs(delta)} from {sector_from_symbol[symbol]}.\n"
+                rebalances_str += f"- Removed ${abs(delta)} from {sector_from_symbol[symbol]}.\n"
 
     update = (
         f"The following is a summary report of actions taken/attempted by Allocator "
