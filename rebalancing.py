@@ -72,13 +72,19 @@ def positional_deltas() -> dict[str, float]:
     return return_deltas
 
 
-def rebalance_portfolio() -> dict[str, float]:
+def rebalance_portfolio() -> dict[str, float] | str:
     """
     Places orders and returns deltas.
     
     `'buy if delta < 0` because if `delta < 0` it means the account is _under_ 
     the ideal allocation. 
     """
+    # Ensure no other positions are in the account
+    account_positions = [position.symbol for position in alpaca.list_positions()]
+    acceptable_etfs = [value[1] for value in allocation.values()]
+    if any([True for position in account_positions if position not in acceptable_etfs]):
+        return "Cannot rebalance portfolio as untracked positions were detected."
+
     deltas = positional_deltas()
 
     # Sell orders first to free up buying power
