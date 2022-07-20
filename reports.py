@@ -25,13 +25,13 @@ def _account_summary() -> str:
         positions_str += (
             f"{sector} is "
             f"{'up $' if attributes['Unrealized Profit'] > 0 else 'down -$'}"
-            f"{abs(attributes['Unrealized Profit'])} in total, with a market value of "
-            f"${attributes['Market Value']}.\n"
+            f"{abs(attributes['Unrealized Profit']):,} in total, with a market value of "
+            f"${attributes['Market Value']:,}.\n"
         )
 
     summary = (
         f"The account is {Config.portfolio_type.lower()}, with a "
-        f"total market value of ${utils.account_equity(rounding=2)}. "
+        f"total market value of ${utils.account_equity(rounding=2):,}. "
         "Below are all positions managed in the account.\n\n"
         f"{positions_str}"
     )
@@ -45,8 +45,12 @@ def deliver_update(
 ) -> None:
     """Texts an update of all that was done. Eventually, this will use email."""
     # If both dictionaries are empty
-    if not allocations and not rebalances:
-        update = "No actions were taken today."
+    if not allocations and (isinstance(rebalances, dict) and not rebalances):
+        update = (
+            "No actions were taken today.\n\n"
+            "Below is a summary of the account as a whole.\n\n"
+            f"{_account_summary()}"
+        )
         delivery.text_me(update)
         delivery.email_me(update, subject="Allocator Daily Report")
         return
@@ -82,4 +86,3 @@ def deliver_update(
 
     delivery.text_me(update)
     delivery.email_me(update, subject="Allocator Daily Report")
-    
