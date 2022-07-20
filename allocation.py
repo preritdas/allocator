@@ -20,7 +20,7 @@ allocation = {
     "Domestic Large Cap": (0.35, "VOO"),
     "Domestic Mid Cap": (0.05, "IJH"),
     "Domestic Small Cap": (0.02, "IJR"),
-    "International": (0.18, "IXUS"),
+    "International Stocks": (0.18, "IXUS"),
     "Short Term Bonds": (0.12, "ISTB"),
     "Aggregate Bonds": (0.28, "AGG")
 }
