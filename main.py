@@ -23,11 +23,11 @@ def deliver_update(allocations: dict[str, float], rebalances: dict[str, float]) 
 
     sector_from_symbol = {val[1]: key for key, val in allocation.allocation.items()}
 
-    allocations_str = ""
+    allocations_str = "" if allocations else "No allocations were made today."
     for symbol, amount in allocations.items():
         allocations_str += f"Allocated ${amount} of cash to {sector_from_symbol[symbol]}.\n"
 
-    rebalances_str = ""
+    rebalances_str = "" if rebalances else "No positions were rebalanced today."
     for symbol, delta in rebalances.items():
         if delta < 0:
             rebalances_str += f"Added ${abs(delta)} to {sector_from_symbol[symbol]}.\n"
