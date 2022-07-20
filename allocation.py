@@ -56,7 +56,7 @@ def calculate_quantities() -> dict[str, float]:
     return quantities
 
 
-def allocate() -> dict:
+def allocate_cash() -> dict:
     """Submits orders based on `calculate_quantities`."""
     quantities = calculate_quantities()
 

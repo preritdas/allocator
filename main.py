@@ -52,8 +52,8 @@ def main() -> None:
     """Executes `buy_assets` every day 10 minutes before market close."""
     while True:
         if utils.market_open():
-            rebalances = rebalancing.positional_deltas()
-            allocations = allocation.calculate_quantities()
+            rebalances = rebalancing.rebalance_portfolio()
+            allocations = allocation.allocate_cash()
             deliver_update(allocations, rebalances)
             time.sleep(86400)
         else:
