@@ -14,7 +14,9 @@ def _account_summary() -> str:
     account_positions = alpaca.list_positions()
     positions: dict[str, dict[str, float]] = {}
     for position in account_positions:
-        positions[sector_from_etf[position.symbol]] = {
+        # If the symbol isn't a tracked ETF, show the actual symbol
+        symbol = sector_from_etf.get(position.symbol, symbol)
+        positions[symbol] = {
             "Market Value": round(float(position.market_value), 2),
             "Unrealized Profit": round(float(position.unrealized_pl), 2)
         }
