@@ -46,7 +46,7 @@ def deliver_update(
     # If both dictionaries are empty
     if not allocations and (isinstance(rebalances, dict) and not rebalances):
         update = (
-            "No actions were taken today.\n\n"
+            "No actions were taken today.\n\n----\n\n"
             "Below is a summary of the account as a whole.\n\n"
             f"{_account_summary()}"
         )
@@ -78,7 +78,7 @@ def deliver_update(
         "Rebalances:\n"
         f"{rebalances_str}"
         "\n\n"
-        "Below is a summary of the account as a whole.\n\n"
+        "Below is a summary of the account as a whole.\n\n----\n\n"
         f"{_account_summary()}"
         ""
     )
