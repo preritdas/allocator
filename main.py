@@ -1,6 +1,3 @@
-# Non-local imports
-import mypytoolkit as kit
-
 # Local imports
 import time
 
