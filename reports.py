@@ -55,18 +55,6 @@ def deliver_update(
     rebalances: dict[str, float] | str
 ) -> None:
     """Texts an update of all that was done. Eventually, this will use email."""
-    # If both dictionaries are empty
-    if not allocations and (isinstance(rebalances, dict) and not rebalances):
-        update = (
-            "No actions were taken today.\n\n"
-            "----\n\nBelow is a summary of the account as a whole.\n\n"
-            f"{_account_summary()}"
-        )
-        if Config.text_reports:
-            delivery.text_me(update)
-        delivery.email_me(update, subject="Allocator Daily Report")
-        return
-
     sector_from_symbol = {val[1]: key for key, val in allocation.allocation.items()}
 
     allocations_str = "" if allocations else "No cash allocations were made today."
@@ -83,18 +71,28 @@ def deliver_update(
             elif delta > 0:
                 rebalances_str += f"- Removed ${abs(delta):,.2f} from {sector_from_symbol[symbol]}.\n"
 
-    update = (
-        f"The following is a summary report of actions taken/attempted by Allocator "
-        f"today, {kit.today_date()}.\n\n"
-        "Allocations:\n"
-        f"{allocations_str}\n\n"
-        "Rebalances:\n"
-        f"{rebalances_str}"
-        "\n\n"
-        "----\n\nBelow is a summary of the account as a whole.\n\n"
-        f"{_account_summary()}"
-        ""
-    )
+    # If both dictionaries are empty
+    if not allocations and (isinstance(rebalances, dict) and not rebalances):
+        update = (
+            "No actions were taken today.\n\n"
+        )
+    else:
+        update = (
+            f"The following is a summary report of actions taken/attempted by Allocator "
+            f"today, {kit.today_date()}.\n\n"
+            "Allocations:\n"
+            f"{allocations_str}\n\n"
+            "Rebalances:\n"
+            f"{rebalances_str}"
+            "\n\n"
+        )
+        
+    # Append account summary
+    update += (
+            "----\n\nBelow is a summary of the account as a whole.\n\n"
+            f"{_account_summary()}"
+            ""
+        )
 
     if Config.text_reports:
         delivery.text_me(update)
