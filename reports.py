@@ -5,7 +5,7 @@ import mypytoolkit as kit
 from config import Config
 import delivery
 import allocation
-from allocation import alpaca, Config, sector_from_etf
+from allocation import alpaca, sector_from_etf
 import utils
 
 
@@ -62,7 +62,8 @@ def deliver_update(
             "----\n\nBelow is a summary of the account as a whole.\n\n"
             f"{_account_summary()}"
         )
-        delivery.text_me(update)
+        if Config.text_reports:
+            delivery.text_me(update)
         delivery.email_me(update, subject="Allocator Daily Report")
         return
 
