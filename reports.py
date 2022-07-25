@@ -2,6 +2,7 @@
 import mypytoolkit as kit
 
 # Project modules
+from config import Config
 import delivery
 import allocation
 from allocation import alpaca, Config, sector_from_etf
@@ -85,5 +86,6 @@ def deliver_update(
         ""
     )
 
-    delivery.text_me(update)
+    if Config.text_reports:
+        delivery.text_me(update)
     delivery.email_me(update, subject="Allocator Daily Report")

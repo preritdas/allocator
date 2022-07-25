@@ -20,6 +20,8 @@ Allocator's predefined portfolios are adapted from [Acorns](https://acorns.com) 
 
 Every day, after Allocator attempts to re-balance the portfolio and allocate free cash, it sends a report of all operations by email and text. A sample daily email report is below. It contains the following information.
 
+(You can choose to not receive daily reports by text by setting `text_reports = false` in the `config.ini`. You will always receive reports by email, however.)
+
 - Cash allocations
 - Rebalanced positions
   - Positions shaved
@@ -66,4 +68,6 @@ Only two files need to be modified for deployment: [keys (sample).py](_keys%20(s
 | Parameter | Behavior | Default |
 | --- | --- | --- |
 | `rebalance_threshold` | The amount a position must vary from its true proportional value (according to portfolio allocation) in order for Allocator to re-balance it. | 0.01 |
-| `portfolio_type` | User selected portfolio according to those specified in the [portfolios](##portfolios) section.
+| `portfolio_type` | User selected portfolio according to those specified in the [portfolios](##portfolios) section. | moderate |
+| `text_reports` | Choose whether to receive daily reports by text as well as by email. | false |
+| `additional_recipients` | Specify a list of emails to which you'd like your reports sent, Do so in the format `additional_recipients = email@gmail.com, email2@me.com` etc. with a comma and space between each email. | '' (empty) |

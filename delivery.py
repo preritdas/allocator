@@ -6,6 +6,9 @@ import _keys
 import smtplib  # emails
 import ssl  # emails
 
+# Project modules
+from config import Config
+
 
 # Instantiate Nexmo client
 nexmo_client = nexmo.Client(
@@ -70,6 +73,6 @@ def email_me(*messages: str, subject: str = "Message From Allocator") -> None:
         )
         server.sendmail(
             from_addr = _keys.Gmail.email_address,
-            to_addrs = _keys.User.email_address,
+            to_addrs = Config.email_recipients,
             msg = content
         )
