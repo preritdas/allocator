@@ -34,9 +34,18 @@ def _account_summary() -> str:
     summary = (
         f"The account is {Config.portfolio_type.lower()}, with a "
         f"total market value of ${utils.account_equity(rounding=2):,.2f}. "
-        "Below are all positions managed in the account.\n\n"
-        f"{positions_str}"
     )
+
+    # Positions
+    if positions:
+        summary += (
+            "Below are all positions managed in the account.\n\n"
+            f"{positions_str}"
+        )
+    else:
+        summary += (
+            "Your account has no positions."
+        )
 
     return summary
 
