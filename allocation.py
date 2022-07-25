@@ -10,19 +10,13 @@ import alpaca_trade_api as alpaca_api
 
 # Local imports
 import threading
-import configparser
 import json  # parse portfolios database
 
 # Project modules
+from config import Config
 import utils
 import _keys
 
-
-# Read user's allocation choice
-class Config:
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    portfolio_type = config['Portfolio']['portfolio_type'].title()
 
 class PortfolioNotFoundError(Exception):
     pass

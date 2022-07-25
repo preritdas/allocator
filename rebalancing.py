@@ -2,22 +2,14 @@
 import alpaca_trade_api as alpaca_api
 
 # Local imports
-import configparser
 import threading
 import time
 
 # Project modules
+from config import Config
 import utils
 import errors
 from allocation import allocation, alpaca  # get Alpaca directly from allocation
-
-
-# Configs
-class Config:
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-
-    rebalance_threshold: float = float(config["Rebalancing"]["rebalance_threshold"])
 
 
 # Define an ETFs dictionary with ideal allocations by symbol
