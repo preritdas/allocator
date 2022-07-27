@@ -57,6 +57,15 @@ def deliver_update(
     """Texts an update of all that was done. Eventually, this will use email."""
     sector_from_symbol = {val[1]: key for key, val in allocation.allocation.items()}
 
+    # Move non-sold rebalances to cash allocation where they belong
+    if rebalances and isinstance(rebalances, dict):
+        # Check that all rebalances were underneath ideal, thus only cash was allocated
+        if not any(amount for amount in rebalances.values() if amount > 0):
+            for symbol, amount in rebalances.items(): 
+                allocations[symbol] = -amount  # flip sign as rebalances work backwards
+
+        rebalances = {}
+
     allocations_str = "" if allocations else "No cash allocations were made today."
     for symbol, amount in allocations.items():
         allocations_str += f"- Allocated ${amount:,.2f} of cash to {sector_from_symbol[symbol]}.\n"
