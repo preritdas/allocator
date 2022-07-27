@@ -64,7 +64,7 @@ def deliver_update(
             for symbol, amount in rebalances.items(): 
                 allocations[symbol] = -amount  # flip sign as rebalances work backwards
 
-        rebalances = {}
+        rebalances = {}  # reset as all actions are now handled as allocations
 
     allocations_str = "" if allocations else "No cash allocations were made today."
     for symbol, amount in allocations.items():
