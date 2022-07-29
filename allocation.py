@@ -4,10 +4,6 @@ and the associate ETF to be executed.
 Raises an exception if the giver proportions sum to more than 1; i.e., if 
 more than the total account value is to be allocated to various sectors."""
 
-
-# Non-local imports
-import alpaca_trade_api as alpaca_api
-
 # Local imports
 import threading
 import json  # parse portfolios database
@@ -15,7 +11,6 @@ import json  # parse portfolios database
 # Project modules
 from config import Config
 import utils
-import _keys
 
 
 class PortfolioNotFoundError(Exception):
@@ -44,14 +39,6 @@ for val in allocation.values():
 
 if total_account > 1:
     raise Exception("Allocations in parameters must be less than or equal to 1 full account size.")
-
-
-# Instantiate Alpaca API
-alpaca = alpaca_api.REST(
-    key_id = _keys.Alpaca.API_KEY,
-    secret_key = _keys.Alpaca.API_SECRET,
-    base_url = _keys.Alpaca.BASE_URL
-)
 
 
 def calculate_quantities() -> dict[str, float]:
