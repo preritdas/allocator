@@ -2,7 +2,7 @@
 import nexmo
 
 # Local imports
-import _keys
+import keys
 import smtplib  # emails
 import ssl  # emails
 
@@ -12,8 +12,8 @@ from config import Config
 
 # Instantiate Nexmo client
 nexmo_client = nexmo.Client(
-    key = _keys.Nexmo.api_key,
-    secret = _keys.Nexmo.api_secret
+    key = keys.Nexmo.api_key,
+    secret = keys.Nexmo.api_secret
 )
 sms = nexmo.Sms(client = nexmo_client)
 
@@ -35,8 +35,8 @@ def text_me(*messages: str):
 
     sms.send_message(
         {
-            "from": _keys.Nexmo.sender,
-            "to": _keys.User.phone_number,
+            "from": keys.Nexmo.sender,
+            "to": keys.User.phone_number,
             "text": text_content
         }
     )
@@ -52,10 +52,10 @@ def email_me(*messages: str, subject: str = "Message From Allocator") -> None:
     messages = "".join(messages)
 
     content = (
-        f"From: Allocator <{_keys.Gmail.email_address}>\n"
-        f"To: {_keys.User.name.title()} <{_keys.User.email_address}>\n"
+        f"From: Allocator <{keys.Gmail.email_address}>\n"
+        f"To: {keys.User.name.title()} <{keys.User.email_address}>\n"
         f"Subject: {subject} \n\n"
-        f"Dear {_keys.User.name.title()},\n\n"
+        f"Dear {keys.User.name.title()},\n\n"
         f"{messages} \n\n"
         "-Allocator"
     )
@@ -63,16 +63,16 @@ def email_me(*messages: str, subject: str = "Message From Allocator") -> None:
     context = ssl.create_default_context()
     
     with smtplib.SMTP_SSL(
-        host=_keys.Gmail.smtp_host, 
-        port=_keys.Gmail.smtp_port, 
-        context=context
+        host = keys.Gmail.smtp_host, 
+        port = keys.Gmail.smtp_port, 
+        context = context
     ) as server:
         server.login(
-            user = _keys.Gmail.email_address,
-            password = _keys.Gmail.password
+            user = keys.Gmail.email_address,
+            password = keys.Gmail.password
         )
         server.sendmail(
-            from_addr = _keys.Gmail.email_address,
+            from_addr = keys.Gmail.email_address,
             to_addrs = Config.email_recipients,
             msg = content
         )
