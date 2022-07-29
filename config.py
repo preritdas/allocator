@@ -1,5 +1,5 @@
 import configparser
-import _keys
+import keys
 
 # Config
 class Config:
@@ -19,6 +19,6 @@ class Config:
         text_reports = True
 
     # Email recipients
-    _email_recipients = [_keys.User.email_address]
+    _email_recipients = [keys.User.email_address]
     _email_recipients.extend(config['Reports']['additional_recipients'].split(', '))
     email_recipients = [email for email in _email_recipients if email != '']
