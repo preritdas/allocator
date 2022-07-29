@@ -9,14 +9,14 @@ from rich.console import Console; console = Console()
 import math
 
 # Project modules
-import _keys
+import keys
 
 
 # Instantiate Alpaca API
 alpaca = alpaca_api.REST(
-    key_id = _keys.Alpaca.API_KEY,
-    secret_key = _keys.Alpaca.API_SECRET,
-    base_url = _keys.Alpaca.BASE_URL
+    key_id = keys.Alpaca.API_KEY,
+    secret_key = keys.Alpaca.API_SECRET,
+    base_url = keys.Alpaca.BASE_URL
 )
 
 
