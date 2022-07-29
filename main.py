@@ -1,5 +1,6 @@
 # Local imports
 import time
+import sys  # argv for deployment delay
 
 # Project modules
 import allocation
@@ -11,6 +12,11 @@ import errors
 
 def main() -> None:
     """Rebalances and allocates portfolio cash every market day at the open."""
+    # Allow a deployment delay until the next day
+    if len(sys.argv) > 1 and sys.argv[1].lower() == 'delay' and utils.market_open():
+        utils.console.log("Delaying deployment until the next market day.")
+        time.sleep(7 * 60)  # sleep for seven hours, market day + 0.5 hours
+
     while True:
         if utils.market_open():
             rebalances = rebalancing.rebalance_portfolio()
