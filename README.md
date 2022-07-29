@@ -40,7 +40,7 @@ A screenshot of a sample email report is below.
 
 ## Deployment
 
-Only two files need to be modified for deployment: [keys.ini](_keys%20(sample).ini) and [config.ini](config.ini). The following values need to be added or modified in each of the files.
+Only two files need to be modified for deployment: [keys.ini](keys%20(sample).ini) and [config.ini](config.ini). The following values need to be added or modified in each of the files.
 
 ### `_keys.py`
 
