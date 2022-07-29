@@ -1,6 +1,6 @@
-"""Report errors to user."""
-
-
+"""
+Report errors to user by text. 
+"""
 # Project modules
 import delivery
 
