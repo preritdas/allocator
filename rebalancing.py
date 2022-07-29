@@ -1,5 +1,5 @@
 # Non-local imports
-import alpaca_trade_api as alpaca_api
+from alpaca_trade_api.rest import APIError  # handle this error
 
 # Local imports
 import threading
@@ -22,13 +22,13 @@ def _fractional_order_errorhandling(side: str, symbol: str, amount: float):
     there isn't enough buying power due to timing or other reason."""
     try:
         utils.fractional_order(side, symbol, amount)
-    except alpaca_api.rest.APIError as e:
+    except APIError as e:
         if str(e) == 'insufficient buying power':
             errors.report_error(
                 f"Error rebalancing {symbol} with {side} order for ${amount}. Skipped."
             )
         else:
-            raise alpaca_api.rest.APIError(e)
+            raise APIError(e)
 
 
 def _current_positions() -> dict[str, float] | str:
@@ -38,7 +38,7 @@ def _current_positions() -> dict[str, float] | str:
     etfs: list[str] = [value[1] for value in allocation.values()]
     try:
         return {etf: float(alpaca.get_position(etf).market_value) for etf in etfs}
-    except alpaca_api.rest.APIError as e:
+    except APIError as e:
         if str(e) == "position does not exist":
             return(
                 "Positions not found. " 
