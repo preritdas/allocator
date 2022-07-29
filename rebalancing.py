@@ -8,8 +8,9 @@ import time
 # Project modules
 from config import Config
 import utils
+from utils import alpaca
 import errors
-from allocation import allocation, alpaca  # get Alpaca directly from allocation
+from allocation import allocation  # the dictionary
 
 
 # Define an ETFs dictionary with ideal allocations by symbol
