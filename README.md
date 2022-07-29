@@ -63,7 +63,7 @@ If you want your script to run forever in the background, as is Allocator's desi
 3. Exit the session with `:detach`. 
 
 
-### `keys.ini`
+### keys.ini
 
 | Parameter | Type | Behavior | Source |
 | --- | --- | --- | --- |
@@ -84,7 +84,7 @@ If you want your script to run forever in the background, as is Allocator's desi
 | `User.phone_number` | string | Target phone number for error alerts and daily reports. | Must be in the format `'14258193018'` for U.S. phone numbers. |
 | `User.email_address` | string | Target email address for receiving daily reports. | Must be in the format `'youremail@gmail.com'`. |
 
-### `config.ini`
+### config.ini
 
 | Parameter | Behavior | Default |
 | --- | --- | --- |
