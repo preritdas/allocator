@@ -1,3 +1,6 @@
+"""
+Text and email functions to be called by other modules.
+"""
 # Non-local imports
 import nexmo
 

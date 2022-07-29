@@ -1,9 +1,10 @@
-"""Defines the `allocation` dict with sectors, proportional allocation,
+"""
+Defines the `allocation` dict with sectors, proportional allocation,
 and the associate ETF to be executed. 
 
 Raises an exception if the giver proportions sum to more than 1; i.e., if 
-more than the total account value is to be allocated to various sectors."""
-
+more than the total account value is to be allocated to various sectors.
+"""
 # Local imports
 import threading
 import json  # parse portfolios database

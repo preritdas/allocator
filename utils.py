@@ -1,5 +1,4 @@
 """Account, orders, market clock, etc."""
-
 # Non-local imports
 import mypytoolkit as kit
 import alpaca_trade_api as alpaca_api

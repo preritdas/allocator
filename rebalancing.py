@@ -1,3 +1,8 @@
+"""
+Determine if positions are further than a predetermined amount from the ideal
+positional allocation. If they are, rebalance the portfolio by selling assets first
+and buying afterwards.
+"""
 # Non-local imports
 from alpaca_trade_api.rest import APIError  # handle this error
 

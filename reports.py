@@ -1,3 +1,7 @@
+"""
+Create functions to read the Alpaca account and easily deliver daily reports
+given the output of the allocation and rebalancing functions.
+"""
 # Non-local imports
 import mypytoolkit as kit
 

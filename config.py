@@ -1,3 +1,7 @@
+"""
+Read and parse values from `config.ini` into their appropriate types, 
+to be referenced by other modules.
+"""
 import configparser
 import keys
 
