@@ -40,7 +40,7 @@ A screenshot of a sample email report is below.
 
 ## Deployment
 
-Only two files need to be modified for deployment: [keys (sample).py](_keys%20(sample).py) and [config.ini](config.ini). [keys (sample).py](_keys%20(sample).py) needs to be renamed to `_keys.py` in order to be recognized by Allocator. The following values need to be added or modified in each of the files.
+Only two files need to be modified for deployment: [keys.ini](_keys%20(sample).ini) and [config.ini](config.ini). The following values need to be added or modified in each of the files.
 
 ### `_keys.py`
 
