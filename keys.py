@@ -1,4 +1,20 @@
+"""
+Read attributes provided in `keys.ini`, parse them in their appropriate types,
+and organize them so they can be easily called by separate modules.
+"""
 import configparser
+import os
+
+
+# Ensure keys.ini file has been created
+if not os.path.exists(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), 'keys.ini')
+):
+    raise Exception(
+        "You must create a keys.ini, in the format of keys (sample).ini, "
+        "containing your API keys and contact information. "
+        "See the GitHub repository to understand the behavior of each attribute."
+    )
 
 
 keys = configparser.ConfigParser()
