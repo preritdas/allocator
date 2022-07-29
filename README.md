@@ -42,7 +42,28 @@ A screenshot of a sample email report is below.
 
 Only two files need to be modified for deployment: [keys.ini](keys%20(sample).ini) and [config.ini](config.ini). The following values need to be added or modified in each of the files.
 
-### `_keys.py`
+1. (Optional but recommended) Use a hosted Linux server for guaranteed uptime, a strong internet connection, and fast data processing.
+2. Clone this repository with the command `git clone https://github.com/preritdas/allocator.git`. 
+3. Navigate into the repository folder with `cd allocator`. 
+4. Create a template keys.ini file using the provided script: `sh createkeys.sh`. 
+5. Use an editor to fill out all the fields in `keys.ini`. Either Vim, Nano, or a desktop editor if available.
+6. Use an editor to modify any values in `config.ini`, including your portfolio style.
+7. Set up dependencies.
+   1. Ensure you have Python 3.10.5 (Any version of Python 3.10 should work).
+   2. Ensure you have pip and venv. If you don't, install pip by executing [get-pip.py](https://bootstrap.pypa.io/get-pip.py). Install venv by running `sudo apt-get install python3.10-venv -y`.
+   3. Create a virtual environment for Allocator with `python3.10 -m venv venv`, replacing "python3.10" with the correct alias for your Python 3.10 installation.
+   4. Activate the environment with `venv/bin/activate` (on Linux/Mac), or with `venv/Scripts/activate` if using Windows.
+   5. Install all dependencies with `pip install -r requirements.txt` (in the environment, the `python` and `pip` aliases are correctly linked).
+   6. Clear the screen with `clear`, then run Allocator with `python main.py`. 
+
+If you want your script to run forever in the background, as is Allocator's design, use `tmux`. 
+
+1. Create a new tmux session with `tmux new -s allocator`. 
+2. Follow the deployment steps above.
+3. Exit the session with `:detach`. 
+
+
+### `keys.ini`
 
 | Parameter | Type | Behavior | Source |
 | --- | --- | --- | --- |
