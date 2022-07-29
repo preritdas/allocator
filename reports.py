@@ -5,8 +5,9 @@ import mypytoolkit as kit
 from config import Config
 import delivery
 import allocation
-from allocation import alpaca, sector_from_etf
+from allocation import sector_from_etf
 import utils
+from utils import alpaca
 
 
 def _account_summary() -> str:
