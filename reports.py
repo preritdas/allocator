@@ -16,6 +16,8 @@ from utils import alpaca
 
 def _account_summary() -> str:
     """Creates an account summary string for use in `deliver_update`."""
+    account_equity = utils.account_equity()
+
     # Positions
     account_positions = alpaca.list_positions()
     positions: dict[str, dict[str, float]] = {}
@@ -36,15 +38,45 @@ def _account_summary() -> str:
             f"${attributes['Market Value']:,.2f}.\n"
         )
 
+    # Account multiplier string depending on margin or under-usage
+    if Config.account_multiplier > 1:
+        account_multiplier_msg = (
+            "Because your multiplier is greater than 1x, your account is "
+            "using margin. "
+            "You should expect your positions to be totally valued at "
+            f"${(account_equity * Config.account_multiplier):,.2f}. "
+            "(If you don't have margin enabled in your account, "
+            "or you have less than $2,000 equity, please immediately change "
+            "your account multiplier to a value less than 1.) "
+        )
+    elif Config.account_multiplier < 1:
+        account_multiplier_msg = (
+            "Because your multiplier is less than 1x, your account "
+            "intentionally aims to maintain a cash balance of "
+            f"${(account_equity * (1 - Config.account_multiplier)):,.2f}. "
+            "You should expect your positions to be totally valued at "
+            f"${(account_equity * Config.account_multiplier):,.2f}. "
+        )
+    else:  # if it is equal to 1
+        account_multiplier_msg = (
+            "Because your multiplier is set to 1x, your account is utilizing its full"
+            "cash balance; no more, no less. You should expect your positions "
+            f"to be totally valued at ${account_equity:,.2f}, equivalent to your "
+            "account equity."
+        )
+
     summary = (
-        f"The account is {Config.portfolio_type.lower()}, with a "
-        f"total market value of ${utils.account_equity(rounding=2):,.2f}. "
+        f"Your account is {Config.portfolio_type.lower()}, with a "
+        f"total market value of ${account_equity:,.2f}. "
+        f"It's operating at a "
+        f"{(1 if Config.account_multiplier == 1 else Config.account_multiplier):.2f}"
+        f"x multiplier. {account_multiplier_msg}\n\n"
     )
 
     # Positions
     if positions:
         summary += (
-            "Below are all positions managed in the account.\n\n"
+            "All positions managed in the account are listed below.\n\n"
             f"{positions_str}"
         )
     else:
@@ -103,7 +135,7 @@ def deliver_update(
         
     # Append account summary
     update += (
-            "----\n\nBelow is a summary of the account as a whole.\n\n"
+            "----\nThe following is a summary of the account as a whole.\n\n"
             f"{_account_summary()}"
             ""
         )
