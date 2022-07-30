@@ -45,7 +45,7 @@ Only two files need to be modified for deployment: [keys.ini](keys%20(sample).in
 1. (Optional but recommended) Use a hosted Linux server for guaranteed uptime, a strong internet connection, and fast data processing.
 2. Clone this repository with the command `git clone https://github.com/preritdas/allocator.git`. 
 3. Navigate into the repository folder with `cd allocator`. 
-4. Create a template keys.ini file using the provided script: `sh createkeys.sh`. 
+4. Create a template keys.ini file using the provided script: `sh configurate.sh`. 
 5. Use an editor to fill out all the fields in `keys.ini`. Either Vim, Nano, or a desktop editor if available.
 6. Use an editor to modify any values in `config.ini`, including your portfolio style.
 7. Set up dependencies.
