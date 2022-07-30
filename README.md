@@ -90,5 +90,6 @@ If you want your script to run forever in the background, as is Allocator's desi
 | --- | --- | --- |
 | `rebalance_threshold` | The amount a position must vary from its true proportional value (according to portfolio allocation) in order for Allocator to re-balance it. | 0.01 |
 | `portfolio_type` | User selected portfolio according to those specified in the [portfolios](##portfolios) section. | moderate |
+| `account_multiplier` | Maintain a portfolio size less or greater (if margin enabled) than your cash balance. | 1 |
 | `text_reports` | Choose whether to receive daily reports by text as well as by email. | false |
 | `additional_recipients` | Specify a list of emails to which you'd like your reports sent, Do so in the format `additional_recipients = email@gmail.com, email2@me.com` etc. with a comma and space between each email. | '' (empty) |

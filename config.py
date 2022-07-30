@@ -5,16 +5,32 @@ to be referenced by other modules.
 import configparser
 import keys
 
-# Config
+
+class ParameterError(Exception):
+    """
+    If invalid parameters values are given in config.ini.
+    """
+    pass
+    
+
 class Config:
+    """
+    Parse parameter values from config.ini in their appropriate types, 
+    to be referenced by other modules.
+    """
     config = configparser.ConfigParser()
     config.read('config.ini')
 
-    # Allocation
+    # Portfolio
     portfolio_type = config['Portfolio']['portfolio_type'].title()
+    account_multiplier = int(config['Portfolio ']['account_multiplier'])
+
+    # Ensure account multiplier is reasonable
+    if not 0 < account_multiplier <= 2:
+        raise ParameterError("Your account multiplier must be between 0 and 2.")
 
     # Rebalancing
-    rebalance_threshold: float = float(config["Rebalancing"]["rebalance_threshold"])
+    rebalance_threshold = float(config["Rebalancing"]["rebalance_threshold"])
 
     # Reports
     if config['Reports']['text_reports'].lower() == 'false':

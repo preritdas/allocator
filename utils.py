@@ -9,6 +9,7 @@ import math
 
 # Project modules
 import keys
+from config import Config
 
 
 # Instantiate Alpaca API
@@ -32,7 +33,7 @@ def account_equity(rounding: int = None) -> float:
 def cash_balance() -> float:
     """Reads available cash to trade and returns a float."""
     account = alpaca.get_account()
-    return float(account.cash)
+    return float(account.cash) * Config.account_multiplier
 
 
 def fractional_order(side: str, symbol: str, amount: float) -> None:
