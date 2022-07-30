@@ -44,7 +44,7 @@ if total_account > 1:
 
 def calculate_quantities() -> dict[str, float]:
     quantities = {}
-    cash = utils.cash_balance()
+    cash = utils.tradable_balance()
 
     for alloc in allocation.values():
         amount = alloc[0] * cash

@@ -20,7 +20,7 @@ alpaca = alpaca_api.REST(
 )
 
 
-# Account and orders
+# ---- Account and orders ----
 
 def account_equity(rounding: int = None) -> float:
     equity = float(alpaca.get_account().equity)
@@ -30,7 +30,7 @@ def account_equity(rounding: int = None) -> float:
     return round(equity, rounding)
 
 
-def cash_balance() -> float:
+def tradable_balance() -> float:
     """Reads available cash to trade and returns a float."""
     account = alpaca.get_account()
     return float(account.cash) * Config.account_multiplier
