@@ -55,7 +55,7 @@ def positional_deltas() -> dict[str, float] | str:
     """Returns a dict of how off each position is in the account based on the
     ideal etf allocations. A negative value means the account is _under_ the
     expectation, so more of it should be bought to compensate."""
-    account_total = utils.account_equity()
+    account_total = utils.account_equity() * Config.account_multiplier
     positions = _current_positions()
 
     if isinstance(positions, str):  # if there was an ignorable error
