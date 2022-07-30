@@ -23,7 +23,7 @@ class Config:
 
     # Portfolio
     portfolio_type = config['Portfolio']['portfolio_type'].title()
-    account_multiplier = int(config['Portfolio']['account_multiplier'])
+    account_multiplier = float(config['Portfolio']['account_multiplier'])
 
     # Ensure account multiplier is reasonable
     if not 0 < account_multiplier <= 2:
