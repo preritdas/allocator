@@ -2,8 +2,8 @@
 Create functions to read the Alpaca account and easily deliver daily reports
 given the output of the allocation and rebalancing functions.
 """
-# Non-local imports
-import mypytoolkit as kit
+# Local imports
+import datetime
 
 # Project modules
 from config import Config
@@ -124,8 +124,8 @@ def deliver_update(
         )
     else:
         update = (
-            f"The following is a summary report of actions taken/attempted by Allocator "
-            f"today, {kit.today_date()}.\n\n"
+            f"The following is a summary report of actions taken by Allocator today. "
+            f"The date is {datetime.date.today().strftime('%A, %B %d, %Y')}.\n\n"
             "Allocations:\n"
             f"{allocations_str}\n\n"
             "Rebalances:\n"
