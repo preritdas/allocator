@@ -48,6 +48,12 @@ A screenshot of a sample email report is below.
 
 Only two files need to be modified for deployment: [keys.ini](keys%20(sample).ini) and [config.ini](config%20(sample).ini). The following values need to be added or modified in each of the files.
 
+### Deploy delay
+
+If the market is open but you'd like to deploy Allocator to only start operating the following market day, run `python main.py delay` instead of `python main.py`. This is useful, for example, if Allocator already executed orders, but you stopped the program manually to update or redeploy it.
+
+### Deployment steps
+
 1. (Optional but recommended) Use a hosted Linux server for guaranteed uptime, a strong internet connection, and fast data processing.
 2. Clone this repository with the command `git clone https://github.com/preritdas/allocator.git`. 
 3. Navigate into the repository folder with `cd allocator`. 
@@ -68,14 +74,16 @@ If you want your script to run forever in the background, as is Allocator's desi
 2. Follow the deployment steps above.
 3. Exit the session with `:detach`. 
 
-Below is an example of an entirely shell-based deployment _and_ redeployment (re-cloning to update the source code while maintaining key and config files).
+### Shell-based demonstration
+
+The following recording is an example of an entirely shell-based deployment _and_ redeployment (re-cloning to update the source code while maintaining key and config files).
 
 [![asciicast](https://asciinema.org/a/TnfhUOXlBAekAipzF8dVJ4Qql.svg)](https://asciinema.org/a/TnfhUOXlBAekAipzF8dVJ4Qql)
 
 A couple notes about the recording:
 - It's not necessary to manually remove __pycache__, readme-content, etc. Re-cloning and moving the files as I did afterwards will override these with updated source code. It's a good idea to remove and rebuild venv however, because dependencies may have changed.
 - I tried re-cloning the repository into the root directory, which caused an error because the folder from the original clone existed. The solution, as shown afterwards, is to clone into the current "allocator" folder, then move all contents from the nested "allocator" to the current directory with `mv allocator/* .`. 
- 
+
 
 ### keys.ini
 
