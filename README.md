@@ -15,6 +15,12 @@ Allocator's predefined portfolios are adapted from [Acorns](https://acorns.com) 
 | Moderately Aggressive | Primarily large domestic stocks, with a sizeable exposure in internationals and domestic bonds. |
 | Aggressive | Entirely domestic and international stocks. |
 
+### Account Multiplier
+
+If you want Allocator to make use of available margin in your account, increase the `portfolio_multiplier` in your [config.ini](config%20(sample).ini). The maximum multiplier is 2. You _must_ have margin enabled (with a positive margin buying power) to use this feature; Allocator will warn you at deployment if you don't.
+
+By setting your account multiplier to a value less than 1, you can choose to manage only a fraction of your account, leaving the remaining balance as free cash. When you transfer funds to your account, Allocator will only invest what it can while leaving enough free cash in accordance with your multiplier. 
+
 
 ## Reports
 
@@ -40,7 +46,7 @@ A screenshot of a sample email report is below.
 
 ## Deployment
 
-Only two files need to be modified for deployment: [keys.ini](keys%20(sample).ini) and [config.ini](config.ini). The following values need to be added or modified in each of the files.
+Only two files need to be modified for deployment: [keys.ini](keys%20(sample).ini) and [config.ini](config%20(sample).ini). The following values need to be added or modified in each of the files.
 
 1. (Optional but recommended) Use a hosted Linux server for guaranteed uptime, a strong internet connection, and fast data processing.
 2. Clone this repository with the command `git clone https://github.com/preritdas/allocator.git`. 
