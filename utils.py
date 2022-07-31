@@ -22,6 +22,18 @@ alpaca = alpaca_api.REST(
 
 # ---- Account and orders ----
 
+def account_margin_status() -> bool:
+    """
+    Returns True if the account has margin enabled and 
+    a positive, tradable margin balance.
+    """
+    account = alpaca.get_account()
+    if float(account.multiplier) > 1:
+        return True
+
+    return False
+
+
 def account_equity(rounding: int = None) -> float:
     equity = float(alpaca.get_account().equity)
     if not rounding:
@@ -50,7 +62,7 @@ def fractional_order(side: str, symbol: str, amount: float) -> None:
     )
 
 
-# Market clock
+# --- Market clock ---- 
 
 last_market_open_verification: float = 0.00
 
