@@ -29,7 +29,7 @@ with open('portfolios.json', 'r') as portfolios_file:
         key: tuple(val) for key, val in allocation.items()
     }
 
-# Reverse lookup possibility
+# Enable reverse lookup, relied on by reports module
 sector_from_etf = {val[1]: key for key, val in allocation.items()}
 
 
@@ -38,18 +38,30 @@ total_account = 0
 for val in allocation.values():
     total_account += val[0]
 
+# Rare fail-safe - in case provided portfolio is greater than account size
 if total_account > 1:
-    raise Exception("Allocations in parameters must be less than or equal to 1 full account size.")
+    raise Exception(
+        "Allocations in parameters must be less than or equal to 1 full account size."
+    )
 
 
 def calculate_quantities() -> dict[str, float]:
-    quantities = {}
-    cash = utils.tradable_balance()
+    # Only allow cash allocations if multiplier results in zero/sub-zero cash reserve
+    if (reserved_cash := (1 - Config.account_multiplier) * utils.account_equity()) < 0:
+        if not Config.account_multiplier > 1: return {}  # pure cash based allocation
 
+    # Ensure there's enough surplus cash to allocate (i.e. all available not reserved)
+    if (cash_balance := float(utils.alpaca.get_account().cash)) - reserved_cash < 0:
+        return {}
+
+    # Subtract reserved cash if multiplier is under 1, otherwise naked cash allocation
+    if Config.account_multiplier > 1: tradable_cash = cash_balance
+    elif Config.account_multiplier <= 1: tradable_cash = cash_balance - reserved_cash
+
+    quantities = {}
     for alloc in allocation.values():
-        amount = alloc[0] * cash
-        if amount < 2:
-            return {}
+        amount = alloc[0] * tradable_cash
+        if amount < 2: return {}
         quantities[alloc[1]] = round(amount, 2)
 
     return quantities
