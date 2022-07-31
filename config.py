@@ -4,13 +4,43 @@ to be referenced by other modules.
 """
 import configparser
 import keys
+import alpaca_trade_api as alpaca_api
 
+
+# ---- Exceptions ----
 
 class ParameterError(Exception):
     """
     If invalid parameters values are given in config.ini.
     """
     pass
+
+class AccountError(Exception):
+    """
+    If there's something wrong with the account, ex. margin
+    unavailable with a multiplier set.
+    """
+    pass
+
+
+# ---- Ensure margin if requested ----
+
+alpaca = alpaca_api.REST(
+    key_id = keys.Alpaca.API_KEY,
+    secret_key = keys.Alpaca.API_SECRET,
+    base_url = keys.Alpaca.BASE_URL
+)
+
+def account_margin_status() -> bool:
+    """
+    Returns True if the account has margin enabled and 
+    a positive, tradable margin balance.
+    """
+    account = alpaca.get_account()
+    if float(account.multiplier) > 1:
+        return True
+
+    return False
     
 
 class Config:
@@ -30,6 +60,10 @@ class Config:
     # Ensure account multiplier is reasonable
     if not 0 < account_multiplier <= 2:
         raise ParameterError("Your account multiplier must be between 0 and 2.")
+
+    # Ensure margin is enabled if multiplier > 1
+    if account_multiplier > 1 and not account_margin_status():
+        raise AccountError("You must have margin enabled to have a multiplier higher than 1.")
 
     # Rebalancing
     rebalance_threshold = float(config["Rebalancing"]["rebalance_threshold"])
