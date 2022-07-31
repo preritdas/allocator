@@ -84,6 +84,20 @@ A couple notes about the recording:
 - It's not necessary to manually remove __pycache__, readme-content, etc. Re-cloning and moving the files as I did afterwards will override these with updated source code. It's a good idea to remove and rebuild venv however, because dependencies may have changed.
 - I tried re-cloning the repository into the root directory, which caused an error because the folder from the original clone existed. The solution, as shown afterwards, is to clone into the current "allocator" folder, then move all contents from the nested "allocator" to the current directory with `mv allocator/* .`. 
 
+### Redeployment
+
+The best way to upgrade and redeploy Allocator while maintaining your original config and keys is to execute the commands in the script below in order, _in Allocator's directory_. Before you begin, make sure you enable the extglob shell option.
+
+```bash
+mkdir protected
+mv *.ini protected
+sudo rm -rf !(protected)  # make sure you have extglob on, and only run this in the Allocator directory!
+git clone https://github.com/preritdas/allocator.git
+mv allocator/* .
+mv protected/* .
+sudo rm -rf protected allocator
+```
+
 
 ### keys.ini
 
