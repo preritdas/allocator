@@ -1,11 +1,11 @@
 # Allocator
 
-Allocator is a fully autonomous, dynamic portfolio manager. It both allocates free account cash to predetermine sectors _and_ reads accounts positions to determine if it should relatively re-balance any positions. This becomes necessary if certain sectors outperform other sectors, resulting in them occupying a larger than defined portion of the account. 
+Allocator is a fully autonomous, dynamic portfolio manager. It both allocates free cash to predetermined sectors _and_ reads account positions to determine if it should relatively re-balance any positions. (This becomes necessary if certain sectors outperform others, resulting in them occupying a larger than defined portion of the account.)
 
 
 ## Portfolios
 
-Allocator's predefined portfolios are adapted from [Acorns](https://acorns.com) Invest's risk profiles. Those are true and tested portfolios, packaged into the local database [portfolios.json](portfolios.json). To select a portfolio, simply update the `portfolio_type` configuration element in [config.ini](config.ini). See steps to deployment in the [deployment](##deployment) section. The five supported portfolio types are below.
+Allocator's predefined portfolios are adapted from [Acorns](https://acorns.com) Invest's risk profiles. Those are true and tested portfolios, packaged into the local database [portfolios.json](portfolios.json). To select a portfolio, simply update the `portfolio_type` configuration element in [config.ini](config%20(sample).ini). See steps to deployment in the [deployment](#deployment) section. The five currently supported portfolio types are below.
 
 | Portfolio Type | Investment Composition |
 | --- | --- |
@@ -26,7 +26,7 @@ By setting your account multiplier to a value less than 1, you can choose to man
 
 Every day, after Allocator attempts to re-balance the portfolio and allocate free cash, it sends a report of all operations by email and text. A sample daily email report is below. It contains the following information.
 
-(You can choose to not receive daily reports by text by setting `text_reports = false` in the `config.ini`. You will always receive reports by email, however.)
+(You can choose to not receive daily reports by text by setting `text_reports = false` in your configuration file. You will always receive reports by email, however.)
 
 - Cash allocations
 - Rebalanced positions
@@ -36,6 +36,7 @@ Every day, after Allocator attempts to re-balance the portfolio and allocate fre
   - Notice of positions unallocated
 - Account summary
   - Portfolio type (moderate, etc.)
+  - Account multiplier, and information on how it's impacting your account
   - Account market value (equity)
   - Each position (including untracked positions) with lifetime unrealized gains and total market value
 
@@ -46,11 +47,11 @@ A screenshot of a sample email report is below.
 
 ## Deployment
 
-Only two files need to be modified for deployment: [keys.ini](keys%20(sample).ini) and [config.ini](config%20(sample).ini). The following values need to be added or modified in each of the files.
+Only two files need to be modified for deployment: [keys.ini](keys%20(sample).ini) and [config.ini](config%20(sample).ini). See their associated [sections](#keysini) to understand what values are necessary in each file, and how to format them. 
 
 ### Deploy delay
 
-If the market is open but you'd like to deploy Allocator to only start operating the following market day, run `python main.py delay` instead of `python main.py`. This is useful, for example, if Allocator already executed orders, but you stopped the program manually to update or redeploy it.
+If the market is open but you'd like to deploy Allocator to only start operating the following market day, run `python main.py delay` instead of `python main.py`. This is useful, for example, if Allocator already executed orders for the day, but you stopped the program manually to update/redeploy it.
 
 ### Deployment steps
 
@@ -62,7 +63,7 @@ If the market is open but you'd like to deploy Allocator to only start operating
 6. Use an editor to modify any values in `config.ini`, including your portfolio style.
 7. Set up dependencies.
    1. Ensure you have Python 3.10.5 (Any version of Python 3.10 should work).
-   2. Ensure you have pip and venv. If you don't, install pip by executing [get-pip.py](https://bootstrap.pypa.io/get-pip.py). Install venv by running `sudo apt-get install python3.10-venv -y`.
+   2. Ensure you have pip and venv. If you don't, install pip by executing [get-pip.py](https://bootstrap.pypa.io/get-pip.py). Install venv by running `sudo apt-get install python3.10-venv -y` on Debian/Ubuntu machines.
    3. Create a virtual environment for Allocator with `python3.10 -m venv venv`, replacing "python3.10" with the correct alias for your Python 3.10 installation.
    4. Activate the environment with `venv/bin/activate` (on Linux/Mac), or with `venv/Scripts/activate` if using Windows.
    5. Install all dependencies with `pip install -r requirements.txt` (in the environment, the `python` and `pip` aliases are correctly linked).
@@ -81,12 +82,12 @@ The following recording is an example of an entirely shell-based deployment _and
 [![asciicast](https://asciinema.org/a/TnfhUOXlBAekAipzF8dVJ4Qql.svg)](https://asciinema.org/a/TnfhUOXlBAekAipzF8dVJ4Qql)
 
 A couple notes about the recording:
-- It's not necessary to manually remove __pycache__, readme-content, etc. Re-cloning and moving the files as I did afterwards will override these with updated source code. It's a good idea to remove and rebuild venv however, because dependencies may have changed.
+- The way I protected the configuration files while removing the rest was far too manually involved. The extglob shell option provides a much sleeker method of achieving the same outcome (see commands in the [redeployment](#redeployment) section).
 - I tried re-cloning the repository into the root directory, which caused an error because the folder from the original clone existed. The solution, as shown afterwards, is to clone into the current "allocator" folder, then move all contents from the nested "allocator" to the current directory with `mv allocator/* .`. 
 
 ### Redeployment
 
-The best way to upgrade and redeploy Allocator while maintaining your original config and keys is to execute the commands in the script below in order, _in Allocator's directory_. Before you begin, make sure you enable the extglob shell option.
+The best way to upgrade and redeploy Allocator while maintaining your original config and keys is to execute the commands in the script below in order, _in Allocator's directory_ (the commands involve using `sudo rm -rf`, a highly dangerous deletion command, if you're not in the correct directory). Before you begin, make sure you enable the extglob shell option.
 
 ```bash
 mkdir protected
