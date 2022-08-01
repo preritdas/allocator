@@ -85,7 +85,7 @@ A couple notes about the recording:
 - The way I protected the configuration files while removing the rest was far too manually involved. The extglob shell option provides a much sleeker method of achieving the same outcome (see commands in the [redeployment](#redeployment) section).
 - I tried re-cloning the repository into the root directory, which caused an error because the folder from the original clone existed. The solution, as shown afterwards, is to clone into the current "allocator" folder, then move all contents from the nested "allocator" to the current directory with `mv allocator/* .`. 
 
-### Redeployment
+## Redeployment
 
 The best way to upgrade and redeploy Allocator while maintaining your original config and keys is to execute the commands in the script below in order, _in Allocator's directory_ (the commands involve using `sudo rm -rf`, a highly dangerous deletion command, if you're not in the correct directory). Before you begin, make sure you enable the extglob shell option.
 
@@ -98,6 +98,35 @@ mv allocator/* .
 mv protected/* .
 sudo rm -rf protected allocator
 ```
+
+### Redeployment Script
+
+You can make the process easier by creating a bash script outside of the Allocator directory. Then, call it when you'd like to upgrade Allocator. The script should exist outside of the directory as it involves cleaning out all files that aren't protected, which will include the script itself. Add the following script to a folder on your PATH.
+
+```bash
+#!/bin/bash
+
+shopt -s extglob  # enable deleting all files except protected
+
+# Upgrades
+mkdir protected &&
+mv *.ini protected &&
+sudo rm -rf !(protected) && 
+git clone https://github.com/preritdas/allocator.git &&
+mv allocator/* . &&
+mv protected/* . &&
+sudo rm -rf protected allocator &&
+
+
+# Deployment
+python3.10 -m venv venv &&  # replace with your correct Python 3.10 alias
+source venv/bin/activate &&
+pip install --upgrade pip &&
+pip install -r requirements.txt &&
+clear
+```
+
+This script will upgrade Allocator and rebuild all dependencies while maintaining your existent config.ini and keys.ini files. 
 
 
 ### keys.ini
