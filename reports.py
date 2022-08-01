@@ -120,7 +120,8 @@ def deliver_update(
     # If both dictionaries are empty
     if not allocations and (isinstance(rebalances, dict) and not rebalances):
         update = (
-            "No actions were taken today.\n\n"
+            "No actions were taken today. "
+            f"The date is {datetime.date.today().strftime('%A, %B %d, %Y')}.\n\n"
         )
     else:
         update = (
