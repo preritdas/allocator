@@ -12,11 +12,19 @@ import errors
 
 def main() -> None:
     """Rebalances and allocates portfolio cash every market day at the open."""
-    # Allow a deployment delay until the next day
-    if len(sys.argv) > 1 and sys.argv[1].lower() == 'delay' and utils.market_open():
-        utils.console.log("Delaying deployment until the next market day.")
-        time.sleep(7 * 60)  # sleep for seven hours, market day + 0.5 hours
+    # Deploy option: delay until next market day
+    if len(sys.argv) > 1:  # if an option is provided
+        if (deploy_option := sys.argv[1].lower()) == 'delay' and utils.market_open():
+            utils.console.log("Delaying deployment until the next market day.")
+            time.sleep(7 * 60)  # sleep for seven hours, market day + 0.5 hours
+        elif deploy_option != 'delay':  # if unrecognized option is given
+            utils.console.log(
+                f"Unrecognized option, {deploy_option}. "
+                "Did you mean 'delay'?"
+            )
+            quit()
 
+    # Main logic
     while True:
         if utils.market_open():
             rebalances = rebalancing.rebalance_portfolio()
