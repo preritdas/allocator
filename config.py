@@ -2,9 +2,20 @@
 Read and parse values from `config.ini` into their appropriate types, 
 to be referenced by other modules.
 """
-import configparser
-import keys
+# Non-local imports
 import alpaca_trade_api as alpaca_api
+
+# Local imports
+import configparser
+import sys  # ensure Python > 3.10
+
+# Project modules
+import keys
+
+
+# Ensure Python > 3.10
+if sys.version_info < (3, 10):
+    raise Exception("You must use Python 3.10 or later.")
 
 
 # ---- Exceptions ----
