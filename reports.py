@@ -59,7 +59,7 @@ def _account_summary() -> str:
         )
     else:  # if it is equal to 1
         account_multiplier_msg = (
-            "Because your multiplier is set to 1x, your account is utilizing its full"
+            "Because your multiplier is set to 1x, your account is utilizing its full "
             "cash balance; no more, no less. You should expect your positions "
             f"to be totally valued at ${account_equity:,.2f}, equivalent to your "
             "account equity."
