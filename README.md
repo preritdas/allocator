@@ -58,7 +58,7 @@ If the market is open but you'd like to deploy Allocator to only start operating
 1. (Optional but recommended) Use a hosted Linux server for guaranteed uptime, a strong internet connection, and fast data processing.
 2. Clone this repository with the command `git clone https://github.com/preritdas/allocator.git`. 
 3. Navigate into the repository folder with `cd allocator`. 
-4. Create a template keys.ini file using the provided script: `sh configurate.sh`. 
+4. Create a template keys.ini file using the provided script: `bash scripts/configurate.sh`. 
 5. Use an editor to fill out all the fields in `keys.ini`. Either Vim, Nano, or a desktop editor if available.
 6. Use an editor to modify any values in `config.ini`, including your portfolio style.
 7. Set up dependencies.
@@ -128,6 +128,7 @@ clear
 
 This script will upgrade Allocator and rebuild all dependencies while maintaining your existent config.ini and keys.ini files. 
 
+**Update**: The upgrade script is now included in the repository. It upgrades all source files while maintaining your pre-configured `config.ini` and `keys.ini` files (if you were to simply re-clone the repository, those files would be overwritten). Call the script with `bash scripts/redeploy.sh`. 
 
 ### keys.ini
 
