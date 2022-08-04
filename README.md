@@ -55,7 +55,7 @@ If the market is open but you'd like to deploy Allocator to only start operating
 
 ### Deployment steps
 
-1. (Optional but recommended) Use a hosted Linux server for guaranteed uptime, a strong internet connection, and fast data processing.
+1. (Optional but recommended) Use a hosted Linux server (Ubuntu, BASH) for guaranteed uptime, a strong internet connection, and fast data processing.
 2. Clone this repository with the command `git clone https://github.com/preritdas/allocator.git`. 
 3. Navigate into the repository folder with `cd allocator`. 
 4. Create a template keys.ini file using the provided script: `bash scripts/configurate.sh`. 
@@ -79,15 +79,13 @@ If you want your script to run forever in the background, as is Allocator's desi
 
 The following recording is an example of an entirely shell-based deployment _and_ redeployment (re-cloning to update the source code while maintaining key and config files).
 
-[![asciicast](https://asciinema.org/a/TnfhUOXlBAekAipzF8dVJ4Qql.svg)](https://asciinema.org/a/TnfhUOXlBAekAipzF8dVJ4Qql)
-
-A couple notes about the recording:
-- The way I protected the configuration files while removing the rest was far too manually involved. The extglob shell option provides a much sleeker method of achieving the same outcome (see commands in the [redeployment](#redeployment) section).
-- I tried re-cloning the repository into the root directory, which caused an error because the folder from the original clone existed. The solution, as shown afterwards, is to clone into the current "allocator" folder, then move all contents from the nested "allocator" to the current directory with `mv allocator/* .`. 
+[![asciicast](https://asciinema.org/a/d0ZMZf1Pqw41NodYv6k5H1djl.svg)](https://asciinema.org/a/d0ZMZf1Pqw41NodYv6k5H1djl)
 
 ## Redeployment
 
 The best way to upgrade and redeploy Allocator while maintaining your original config and keys is to execute the commands in the script below in order, _in Allocator's directory_ (the commands involve using `sudo rm -rf`, a highly dangerous deletion command, if you're not in the correct directory). Before you begin, make sure you enable the extglob shell option.
+
+The following script is now included in the repository, and is used in the above demonstration. 
 
 ```bash
 mkdir protected
@@ -99,9 +97,7 @@ mv protected/* .
 sudo rm -rf protected allocator
 ```
 
-### Redeployment Script
-
-You can make the process easier by creating a bash script outside of the Allocator directory. Then, call it when you'd like to upgrade Allocator. The script should exist outside of the directory as it involves cleaning out all files that aren't protected, which will include the script itself. Add the following script to a folder on your PATH.
+If you'd like a script that not only upgrades Allocator, but rebuilds its dependencies for deployment, create the following script outside of the `allocator` directory. Then, call it when you'd like to upgrade Allocator. The script should exist outside of the directory as it involves cleaning out all files that aren't protected, which will include the script itself. Add the following script to a folder on your PATH. 
 
 ```bash
 #!/bin/bash
@@ -128,7 +124,7 @@ clear
 
 This script will upgrade Allocator and rebuild all dependencies while maintaining your existent config.ini and keys.ini files. 
 
-**Update**: The upgrade script is now included in the repository. It upgrades all source files while maintaining your pre-configured `config.ini` and `keys.ini` files (if you were to simply re-clone the repository, those files would be overwritten). Call the script with `bash scripts/redeploy.sh`. 
+That said, it's recommended to just use the script built into the repository, `bash scripts/redeploy.sh`, and rebuild dependencies yourself with a virtual environment.
 
 ### keys.ini
 
