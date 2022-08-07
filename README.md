@@ -4,7 +4,7 @@ Allocator is a fully autonomous, dynamic portfolio manager. It both allocates fr
 
 Watch a one minute recording of Allocator in action!
 
-[![video](readme-content/terminal_video_snapshot.PNG)](https://user-images.githubusercontent.com/96673937/183276748-998a3044-9849-4bb5-8f0d-15f7b7984ecb.mp4)
+[![video](readme-content/terminal_video_snapshot.PNG)](https://user-images.githubusercontent.com/96673937/183304943-a0c990ec-5839-4e50-a724-6957c7469231.mp4)
 
 
 ## Portfolios
