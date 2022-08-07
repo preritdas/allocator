@@ -18,7 +18,9 @@ def main() -> None:
     # Deploy option: delay until next market day
     if len(sys.argv) > 1:  # if an option is provided
         if (deploy_option := sys.argv[1].lower()) == 'delay' and utils.market_open():
-            with utils.console.status("Delaying deployment until the next market day."):
+            with utils.console.status(
+                "Market is still open. Delaying deployment until the next market day."
+            ):
                 while utils.market_open(): time.sleep(1)  
         elif deploy_option != 'delay':  # if unrecognized option is given
             utils.console.log(
@@ -31,7 +33,7 @@ def main() -> None:
     while True: 
         with status:
             status.update("Waiting for the market to open.")
-            while not utils.market_open(): time.sleep(60)
+            while not utils.market_open(): time.sleep(3)
 
             # Market is open. Log new lines to console.
             utils.console.line()
