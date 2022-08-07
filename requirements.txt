@@ -1,4 +1,4 @@
 alpaca-trade-api==2.3.0
 nexmo==2.5.2
-mypytoolkit==1.4.5
+mypytoolkit==1.4.6
 rich==12.5.1
