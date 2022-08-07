@@ -19,7 +19,7 @@ def main() -> None:
     if len(sys.argv) > 1:  # if an option is provided
         if (deploy_option := sys.argv[1].lower()) == 'delay' and utils.market_open():
             with utils.console.status("Delaying deployment until the next market day."):
-                time.sleep(7 * 60)  # sleep for seven hours, market day + 0.5 hours
+                while utils.market_open(): time.sleep(1)  
         elif deploy_option != 'delay':  # if unrecognized option is given
             utils.console.log(
                 f"Unrecognized option, {deploy_option}. "
@@ -41,7 +41,7 @@ def main() -> None:
             # allocations = allocation.allocate_cash()
             time.sleep(5)  
 
-        with utils.console.status("Delivering a report by email."):
+        with utils.console.status("Compiling and delivering a report by email."):
             reports.deliver_update(allocations, rebalances)
         
         utils.console.log(f"Completed account revision on {kit.full_date_string()}.")
