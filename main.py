@@ -27,26 +27,31 @@ def main() -> None:
             )
             return
 
-    while True:
-        with utils.console.status("Waiting until the market opens."):
+    status = utils.console.status("")
+    while True: 
+        with status:
+            status.update("Waiting for the market to open.")
             while not utils.market_open(): time.sleep(60)
 
-        with utils.console.status("Rebalancing the portfolio."):
-            rebalances = rebalancing.positional_deltas()
-            # rebalances = rebalancing.rebalance_portfolio()
+            # Market is open. Log new lines to console.
+            utils.console.line()
+            utils.console.rule(kit.full_date_string())
+            utils.console.log("Market is open. Beginning account revision.")
+
+            status.update("Rebalancing the portfolio.")
+            rebalances = rebalancing.rebalance_portfolio()
             time.sleep(5)  # ensure positions can be recognized by subsequent calls
 
-        with utils.console.status("Allocating free cash."):
-            allocations = allocation.calculate_quantities()
-            # allocations = allocation.allocate_cash()
+            status.update("Allocating free cash.")
+            allocations = allocation.allocate_cash()
             time.sleep(5)  
 
-        with utils.console.status("Compiling and delivering a report by email."):
+            status.update("Compiling and delivering a report by email.")
             reports.deliver_update(allocations, rebalances)
         
-        utils.console.log(f"Completed account revision on {kit.full_date_string()}.")
+            utils.console.log(f"Completed account revision on {kit.full_date_string()}.")
 
-        with utils.console.status("Sleeping until the market closes."):
+            status.update("Sleeping until the market closes.")
             while utils.market_open(): time.sleep(60)
 
 
