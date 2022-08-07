@@ -2,6 +2,10 @@
 
 Allocator is a fully autonomous, dynamic portfolio manager. It both allocates free cash to predetermined sectors _and_ reads account positions to determine if it should relatively re-balance any positions. (This becomes necessary if certain sectors outperform others, resulting in them occupying a larger than defined portion of the account.)
 
+Watch a one minute recording of Allocator in action!
+
+[![asciicast](https://asciinema.org/a/6rFeATrrJcfiClLmnfQ6JjYfu.svg)](https://asciinema.org/a/6rFeATrrJcfiClLmnfQ6JjYfu)
+
 
 ## Portfolios
 
@@ -77,7 +81,7 @@ If you want your script to run forever in the background, as is Allocator's desi
 
 ### Shell-based demonstration
 
-The following recording is an example of an entirely shell-based deployment _and_ redeployment (re-cloning to update the source code while maintaining key and config files).
+The following recording is an example of an entirely shell-based deployment _and_ redeployment (re-cloning to update the source code while maintaining key and config files). Skip to 1:06 to see only the redeployment demonstration, as all that preceded 1:06 is the initial deployment, better demonstrated in the [header recording](#allocator).
 
 [![asciicast](https://asciinema.org/a/d0ZMZf1Pqw41NodYv6k5H1djl.svg)](https://asciinema.org/a/d0ZMZf1Pqw41NodYv6k5H1djl)
 
