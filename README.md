@@ -6,6 +6,7 @@ Watch a one minute recording of Allocator in action!
 
 [![video](readme-content/terminal_video_snapshot.PNG)](https://user-images.githubusercontent.com/96673937/183304943-a0c990ec-5839-4e50-a724-6957c7469231.mp4)
 
+(You can watch the raw shell asciicast [here](https://asciinema.org/a/bMnBp1SnOiryIcjwApuKLHTnE).)
 
 ## Portfolios
 
@@ -81,9 +82,9 @@ If you want your script to run forever in the background, as is Allocator's desi
 
 ### Shell-based demonstration
 
-The following recording is an example of an entirely shell-based deployment _and_ redeployment (re-cloning to update the source code while maintaining key and config files). Skip to 1:06 to see only the redeployment demonstration, as all that preceded 1:06 is the initial deployment, better demonstrated in the [header recording](#allocator).
+The following recording is an example of an entirely shell-based deployment _and_ redeployment (re-cloning to update the source code while maintaining key and config files). 
 
-[![asciicast](https://asciinema.org/a/d0ZMZf1Pqw41NodYv6k5H1djl.svg)](https://asciinema.org/a/d0ZMZf1Pqw41NodYv6k5H1djl)
+[![asciicast](https://asciinema.org/a/d0ZMZf1Pqw41NodYv6k5H1djl.svg)](https://asciinema.org/a/d0ZMZf1Pqw41NodYv6k5H1djl?t=88)
 
 ## Redeployment
 
