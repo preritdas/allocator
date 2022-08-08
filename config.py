@@ -8,6 +8,7 @@ import alpaca_trade_api as alpaca_api
 # Local imports
 import configparser
 import sys  # ensure Python > 3.10
+import os  # ensure file exists
 
 # Project modules
 import keys
@@ -54,13 +55,24 @@ def account_margin_status() -> bool:
     return False
     
 
+# ---- Config Parameters ----
+
+# Ensure config file exists
+if not os.path.exists(
+    config_path := os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
+):
+    raise Exception(
+        "You must have a config.ini, it comes with the repository. "
+        "See the GitHub repository to understand the behavior of each attribute."
+    )
+
 class Config:
     """
     Parse parameter values from config.ini in their appropriate types, 
     to be referenced by other modules.
     """
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read(config_path)
 
     # Portfolio
     portfolio_type = config['Portfolio']['portfolio_type'].title()
