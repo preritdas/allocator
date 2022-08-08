@@ -8,7 +8,7 @@ import os
 
 # Ensure keys.ini file has been created
 if not os.path.exists(
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), 'keys.ini')
+    keys_path := os.path.join(os.path.dirname(os.path.abspath(__file__)), 'keys.ini')
 ):
     raise Exception(
         "You must create a keys.ini, in the format of keys (sample).ini, "
@@ -18,7 +18,7 @@ if not os.path.exists(
 
 
 keys = configparser.ConfigParser()
-keys.read('keys.ini')
+keys.read(keys_path)
 
 
 class Alpaca:
