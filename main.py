@@ -56,6 +56,9 @@ def main() -> None:
             status.update("Sleeping until the market closes.")
             while utils.market_open(): time.sleep(60)
 
+            # New line for new day
+            utils.console.line()
+
 
 if __name__ == '__main__':
     try:
