@@ -8,6 +8,7 @@ more than the total account value is to be allocated to various sectors.
 # Local imports
 import threading
 import json  # parse portfolios database
+import os  # ensure portfolios database exists
 
 # Project modules
 from config import Config
@@ -17,7 +18,18 @@ import utils
 class PortfolioNotFoundError(Exception):
     pass
 
-with open('portfolios.json', 'r') as portfolios_file:
+# Ensure portfolios.json file has been created
+if not os.path.exists(
+    (
+        portfolio_db_path := os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), 'portfolios.json')
+    )
+):
+    raise Exception(
+        "You must have a portfolios.json database, it comes with the repository."
+    )
+
+with open(portfolio_db_path, 'r') as portfolios_file:
     _all_portfolios: dict[str, dict[str, list[float, str]]] = json.load(portfolios_file)
     if not Config.portfolio_type in _all_portfolios.keys():
         raise PortfolioNotFoundError(f"{Config.portfolio_type} not found in portfolios database.")
