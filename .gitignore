@@ -1,0 +1,18 @@
+# Environments
+venv/
+win_venv/
+winvenv/
+env/
+
+# Cache files
+__pycache__/
+.DS_Store
+
+# Private files
+keys.ini
+config.ini
+test.py
+
+# Pyinstaller
+dist/
+build/
