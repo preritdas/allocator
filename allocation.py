@@ -46,12 +46,7 @@ sector_from_etf = {val[1]: key for key, val in allocation.items()}
 
 
 # Checking for total account allocation size
-total_account = 0
-for val in allocation.values():
-    total_account += val[0]
-
-# Rare fail-safe - in case provided portfolio is greater than account size
-if total_account > 1:
+if sum(val[0] for val in allocation.values()) > 1:
     raise Exception(
         "Allocations in parameters must be less than or equal to 1 full account size."
     )
