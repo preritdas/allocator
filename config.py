@@ -37,7 +37,7 @@ class AccountError(Exception):
 
 # ---- Ensure margin if requested ----
 
-alpaca = alpaca_api.REST(
+_alpaca = alpaca_api.REST(
     key_id = keys.Alpaca.API_KEY,
     secret_key = keys.Alpaca.API_SECRET,
     base_url = keys.Alpaca.BASE_URL
@@ -48,7 +48,7 @@ def account_margin_status() -> bool:
     Returns True if the account has margin enabled and 
     a positive, tradable margin balance.
     """
-    account = alpaca.get_account()
+    account = _alpaca.get_account()
     if float(account.multiplier) > 1:
         return True
 
