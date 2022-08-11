@@ -43,7 +43,10 @@ def account_equity(rounding: int = None) -> float:
 
 
 def tradable_balance() -> float:
-    """Reads available cash to trade and returns a float."""
+    """
+    Reads available cash to trade and returns a float.
+    Accounts for account multiplier.
+    """
     account = alpaca.get_account()
     return float(account.cash) * Config.account_multiplier
 
