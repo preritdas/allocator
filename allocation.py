@@ -53,22 +53,25 @@ if sum(val[0] for val in allocation.values()) > 1:
 
 
 def calculate_quantities() -> dict[str, float]:
-    # Only allow cash allocations if multiplier results in zero/sub-zero cash reserve
-    if (reserved_cash := (1 - Config.account_multiplier) * utils.account_equity()) < 0:
-        if not Config.account_multiplier > 1: return {}  # pure cash based allocation
+    """
+    Invest the cash available after reserving cash according to multiplier. 
+    If the account multiplier is 1 or higher, reserved cash is irrelevant.
+    Never use margin, these are pure-cash operations.
+    """
+    reserved_cash = (1 - Config.account_multiplier) * utils.account_equity()
 
-    # Ensure there's enough surplus cash to allocate (i.e. all available not reserved)
-    if (cash_balance := float(utils.alpaca.get_account().cash)) - reserved_cash < 0:
+    # Check for negative cash balance to abort cash operations
+    if (cash_balance := float(utils.alpaca.get_account().cash)) < 0:
         return {}
 
     # Subtract reserved cash if multiplier is under 1, otherwise naked cash allocation
-    if Config.account_multiplier > 1: tradable_cash = cash_balance
-    elif Config.account_multiplier <= 1: tradable_cash = cash_balance - reserved_cash
+    if Config.account_multiplier >= 1: tradable_cash = cash_balance
+    elif Config.account_multiplier < 1: tradable_cash = cash_balance - reserved_cash
 
     quantities = {}
     for alloc in allocation.values():
         amount = alloc[0] * tradable_cash
-        if amount < 2: return {}
+        if amount <= 2: return {}  # if any order is less than $2
         quantities[alloc[1]] = round(amount, 2)
 
     return quantities
