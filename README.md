@@ -1,3 +1,6 @@
+![pytest](https://github.com/preritdas/allocator/actions/workflows/pytest.yml/badge.svg)
+
+
 # Allocator
 
 Allocator is a fully autonomous, dynamic portfolio manager. It both allocates free cash to predetermined sectors _and_ reads account positions to determine if it should relatively re-balance any positions. (This becomes necessary if certain sectors outperform others, resulting in them occupying a larger than defined portion of the account.)
