@@ -32,7 +32,7 @@ def _account_summary() -> str:
     positions_str = ""
     for sector, attributes in positions.items():
         positions_str += (
-            f"{sector} is "
+            f"- {sector} is "
             f"{'up $' if attributes['Unrealized Profit'] > 0 else 'down -$'}"
             f"{abs(attributes['Unrealized Profit']):,.2f} in total, with a market value of "
             f"${attributes['Market Value']:,.2f}.\n"
