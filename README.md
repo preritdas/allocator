@@ -1,5 +1,5 @@
 ![pytest](https://github.com/preritdas/allocator/actions/workflows/pytest.yml/badge.svg)
-![badge](https://github.com/preritdas/allocator/tests/badge.svg)
+![badge](tests/badge.svg)
 
 
 # Allocator
