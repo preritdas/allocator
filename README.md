@@ -1,5 +1,8 @@
 ![pytest](https://github.com/preritdas/allocator/actions/workflows/pytest.yml/badge.svg)
-![badge](tests/badge.svg)
+![coverage](tests/badge.svg)
+![versions](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10-blue)
+![deployment](https://img.shields.io/badge/deployment-active--deployment-brightgreen)
+![maintenance](https://img.shields.io/badge/maintenance-passively--developed-green)
 
 
 # Allocator
