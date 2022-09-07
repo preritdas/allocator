@@ -3,6 +3,7 @@
 ![versions](https://img.shields.io/badge/python-3.10-blue)
 ![deployment](https://img.shields.io/badge/deployment-active--deployment-brightgreen)
 ![maintenance](https://img.shields.io/badge/maintenance-passively--developed-green)
+![Documentation Status](https://readthedocs.org/projects/portfolio-allocator/badge/?version=latest)
 
 
 # Allocator
