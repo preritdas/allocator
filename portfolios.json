@@ -24,7 +24,7 @@
         },
     "Moderately Aggressive": 
         {
-            "Large Company Stock": [0.47, "VOO"],
+            "Large Company Stocks": [0.47, "VOO"],
             "Medium Company Stocks": [0.06, "IJH"],
             "Small Company Stocks": [0.03, "IJR"],
             "International Stocks": [0.24, "IXUS"],
