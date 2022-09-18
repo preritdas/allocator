@@ -31,7 +31,9 @@ def _fractional_order_errorhandling(side: str, symbol: str, amount: float):
     except APIError as e:
         if str(e) == 'insufficient buying power':
             errors.report_error(
-                f"Error rebalancing {symbol} with {side} order for ${amount}. Skipped."
+                f"Error rebalancing {symbol} with {side} order for ${amount:,.2f}. " \
+                    "Insufficient buying power. Skipped.",
+                console = utils.console
             )
         else:
             raise APIError(e)
