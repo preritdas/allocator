@@ -84,3 +84,5 @@ def market_open() -> bool:
             return True
         else:
             return False
+
+    return False
